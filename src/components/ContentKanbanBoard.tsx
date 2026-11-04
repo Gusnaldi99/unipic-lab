@@ -49,6 +49,7 @@ export const ContentKanbanBoard: React.FC<ContentKanbanBoardProps> = ({
 }) => {
   const [weekFilter, setWeekFilter] = useState<string>('all');
   const [formatFilter, setFormatFilter] = useState<string>('all');
+  const [activeMobileTab, setActiveMobileTab] = useState<'all' | ContentStatus>('all');
   const [draggedCardId, setDraggedCardId] = useState<string | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<ContentStatus | null>(null);
 
@@ -155,9 +156,34 @@ export const ContentKanbanBoard: React.FC<ContentKanbanBoardProps> = ({
         </div>
       </div>
 
+      {/* Mobile Column Switcher Tab Bar */}
+      <div className="kanban-mobile-tabs" role="tablist" aria-label="Pilih kolom status pipeline">
+        <button
+          type="button"
+          className={`mobile-column-tab ${activeMobileTab === 'all' ? 'active' : ''}`}
+          onClick={() => setActiveMobileTab('all')}
+        >
+          Semua ({filteredCards.length})
+        </button>
+        {columns.map((c) => {
+          const count = filteredCards.filter((card) => normalizeCardStatus(card.status) === c.status).length;
+          return (
+            <button
+              key={c.status}
+              type="button"
+              className={`mobile-column-tab ${activeMobileTab === c.status ? 'active' : ''}`}
+              onClick={() => setActiveMobileTab(c.status)}
+            >
+              <span className={`col-dot ${c.dotClass}`} style={{ width: 6, height: 6, display: 'inline-block' }} />
+              <span>{c.title.split(' ')[0]} ({count})</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* 4-Column Pipeline Board */}
-      <div className="pipeline-board">
-        {columns.map((col) => {
+      <div className={`pipeline-board ${activeMobileTab !== 'all' ? 'single-column-active' : ''}`}>
+        {columns.filter((col) => activeMobileTab === 'all' || col.status === activeMobileTab).map((col) => {
           const colCards = filteredCards.filter(
             (c) => normalizeCardStatus(c.status) === col.status
           );

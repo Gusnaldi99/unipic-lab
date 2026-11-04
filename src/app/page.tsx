@@ -13,6 +13,7 @@ import { ContentDetailModal } from '@/components/ContentDetailModal';
 import { CreateContentModal } from '@/components/CreateContentModal';
 import { ClientProgressOverview } from '@/components/ClientProgressOverview';
 import { ClientModal } from '@/components/ClientModal';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 import {
   initialBrands,
   initialContentCards,
@@ -563,6 +564,20 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation (Antislop Mobile First) */}
+      <MobileBottomNav
+        activeMenu={activeMenu}
+        onSelectMenu={(menu) => {
+          setActiveMenu(menu);
+          if (menu === 'calendar') {
+            setActiveViewMode('calendar');
+          } else if (menu === 'kanban') {
+            setActiveViewMode('kanban');
+          }
+        }}
+        onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+      />
     </>
   );
 }

@@ -1083,3 +1083,484 @@
   gap: 8px;
   text-decoration: underline;
 }
+
+/* ==========================================================================
+   MOBILE & RESPONSIVE REFLOW (ANTISLOP-LAYOUTMOBILE)
+   ========================================================================== */
+
+/* Calendar Defaults (Desktop) */
+.calendar-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy-900);
+}
+
+.calendar-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.cal-cell-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.cal-post-counter {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--primary-600);
+}
+
+.cal-dots-mobile {
+  display: none;
+}
+
+.cal-mobile-agenda {
+  display: none;
+}
+
+.kanban-mobile-tabs {
+  display: none;
+}
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 900px) {
+  .client-progress-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Brand Header Reflow */
+  .brand-header-card {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+
+  .brand-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .brand-select-group {
+    width: 100%;
+  }
+
+  .brand-dropdown-select {
+    width: 100%;
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .brand-actions-right {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn-brand-action {
+    flex: 1 1 auto;
+    min-height: 44px;
+    font-size: 12px;
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  .brand-meta-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  .stat-pill-box {
+    padding: 8px 10px;
+  }
+
+  .stat-pill-main {
+    font-size: 14px;
+  }
+
+  /* View Controls Bar */
+  .calendar-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .view-mode-tabs {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tab-mode-btn {
+    justify-content: center;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .calendar-filters-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .filter-select {
+    width: 100%;
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  /* Mobile Calendar Grid & Agenda */
+  .calendar-month-container {
+    padding: 12px;
+  }
+
+  .calendar-days-header {
+    font-size: 10px;
+    padding-bottom: 6px;
+  }
+
+  .calendar-grid-cells {
+    grid-auto-rows: 52px;
+    gap: 1px;
+    margin-top: 6px;
+  }
+
+  .cal-day-cell {
+    padding: 4px 2px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 4px;
+    min-height: 44px;
+  }
+
+  .cal-day-cell.is-selected {
+    background: #EEF0FF !important;
+    outline: 2px solid var(--primary-600);
+    z-index: 2;
+  }
+
+  .cal-cell-top {
+    justify-content: center;
+  }
+
+  .cal-post-counter {
+    display: none;
+  }
+
+  .cal-chips-desktop {
+    display: none;
+  }
+
+  .cal-dots-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  .cal-dot-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .cal-dot-indicator.dot-video   { background: var(--primary-600); }
+  .cal-dot-indicator.dot-graphic { background: var(--success); }
+
+  .cal-dot-more {
+    font-size: 8px;
+    font-weight: 800;
+    color: var(--text-muted);
+  }
+
+  /* Mobile Agenda Day Breakdown */
+  .cal-mobile-agenda {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .agenda-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .agenda-date-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy-900);
+    background: var(--bg-page);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .agenda-count-text {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .btn-agenda-add {
+    background: var(--primary-50);
+    border: 1px solid var(--primary-100);
+    color: var(--primary-600);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .agenda-empty-box {
+    padding: 24px 14px;
+    text-align: center;
+    background: var(--bg-page);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .agenda-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .agenda-card-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    min-height: 52px;
+  }
+
+  .agenda-card-item:active {
+    transform: scale(0.98);
+    background: #F8F9FE;
+  }
+
+  .agenda-card-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .agenda-format-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .agenda-format-icon.bg-video {
+    background: #EEF0FF;
+    color: var(--primary-600);
+  }
+
+  .agenda-format-icon.bg-graphic {
+    background: #E6F7EE;
+    color: var(--success);
+  }
+
+  .agenda-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .agenda-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .agenda-format-badge {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .agenda-pillar-badge {
+    font-size: 9px;
+    font-weight: 600;
+    background: #F3F4F6;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #4B5563;
+  }
+
+  .agenda-status-badge {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--primary-600);
+    text-transform: capitalize;
+  }
+
+  .agenda-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy-900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .agenda-card-snippet {
+    font-size: 10px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Mobile Kanban Segmented Tabs & Swipe Track */
+  .kanban-mobile-tabs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 2px 2px 6px 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .kanban-mobile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-column-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 600;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    white-space: nowrap;
+    cursor: pointer;
+    min-height: 44px;
+  }
+
+  .mobile-column-tab.active {
+    background: var(--primary-600);
+    color: #FFFFFF;
+    border-color: var(--primary-600);
+    box-shadow: 0 2px 6px rgba(67, 56, 232, 0.25);
+  }
+
+  .pipeline-board {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding-bottom: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pipeline-col {
+    min-width: 84vw;
+    max-width: 86vw;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    min-height: 380px;
+    padding: 10px;
+  }
+
+  .pipeline-board.single-column-active .pipeline-col {
+    min-width: 100%;
+    max-width: 100%;
+    scroll-snap-align: none;
+  }
+
+  .content-item-card {
+    padding: 10px;
+    min-height: 60px;
+  }
+
+  .btn-add-col-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Modal Mobile Bottom Sheet Reflow */
+@media (max-width: 640px) {
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .modal-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 88dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 20px 16px calc(24px + env(safe-area-inset-bottom)) 16px !important;
+    margin: 0 !important;
+    box-shadow: 0 -8px 32px rgba(11, 16, 56, 0.28) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-dialog input,
+  .modal-dialog select,
+  .modal-dialog textarea {
+    font-size: 16px !important; /* Critical: Stops iOS auto zoom */
+    min-height: 44px !important;
+  }
+
+  .btn-close-modal {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
