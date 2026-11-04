@@ -38,7 +38,7 @@ export default function DashboardPage() {
 
   // Agency Specific State
   const [brands, setBrands] = useState<BrandProfile[]>(initialBrands);
-  const [selectedBrandId, setSelectedBrandId] = useState<string>('jetfit-karawaci');
+  const [selectedBrandId, setSelectedBrandId] = useState<string>('');
   const [allCards, setAllCards] = useState<ContentCardItem[]>(initialContentCards);
   const [activeViewMode, setActiveViewMode] = useState<'calendar' | 'kanban'>('calendar');
 
@@ -62,14 +62,19 @@ export default function DashboardPage() {
           fetchCardsFromSupabase(),
         ]);
 
-        if (cloudBrands && cloudBrands.length > 0) {
+        if (cloudBrands !== null) {
           setBrands(cloudBrands);
+          if (cloudBrands.length > 0) {
+            setSelectedBrandId((prev) => prev || cloudBrands[0].id);
+          } else {
+            setSelectedBrandId('');
+          }
           try {
             localStorage.setItem(BRANDS_STORAGE_KEY, JSON.stringify(cloudBrands));
           } catch (e) {}
         }
 
-        if (cloudCards && cloudCards.length > 0) {
+        if (cloudCards !== null) {
           setAllCards(cloudCards);
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudCards));
@@ -83,7 +88,7 @@ export default function DashboardPage() {
         const savedCards = localStorage.getItem(STORAGE_KEY);
         if (savedCards) {
           const parsed = JSON.parse(savedCards);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             setAllCards(parsed);
           }
         }
@@ -91,8 +96,11 @@ export default function DashboardPage() {
         const savedBrands = localStorage.getItem(BRANDS_STORAGE_KEY);
         if (savedBrands) {
           const parsedB = JSON.parse(savedBrands);
-          if (Array.isArray(parsedB) && parsedB.length > 0) {
+          if (Array.isArray(parsedB)) {
             setBrands(parsedB);
+            if (parsedB.length > 0) {
+              setSelectedBrandId((prev) => prev || parsedB[0].id);
+            }
           }
         }
       } catch (e) {
@@ -123,11 +131,28 @@ export default function DashboardPage() {
     }
   };
 
+  const defaultEmptyBrand: BrandProfile = {
+    id: '',
+    name: 'Belum Ada Klien',
+    code: '---',
+    category: 'Belum ada klien terdaftar',
+    socialUrl: '',
+    references: '',
+    mandatoryHashtags: [],
+    quota: {
+      totalTarget: 0,
+      videoTarget: 0,
+      graphicTarget: 0,
+    },
+  };
+
   const currentBrand =
-    brands.find((b) => b.id === selectedBrandId) || brands[0] || initialBrands[0];
+    (selectedBrandId ? brands.find((b) => b.id === selectedBrandId) : null) ||
+    brands[0] ||
+    defaultEmptyBrand;
 
   // Cards for current active brand
-  const brandCards = allCards.filter((c) => c.brandId === currentBrand.id);
+  const brandCards = currentBrand.id ? allCards.filter((c) => c.brandId === currentBrand.id) : [];
 
   // Quota metrics calculation
   const totalCards = brandCards.length;
@@ -223,16 +248,22 @@ export default function DashboardPage() {
     deleteCardFromSupabase(cardId);
   };
 
-  const handleResetDefaultData = () => {
-    if (confirm('Kembalikan semua data klien dan konten ke data awal CSV mock?')) {
-      saveCardsAndSync(initialContentCards);
-      saveBrandsAndSync(initialBrands);
-      setSelectedBrandId('jetfit-karawaci');
+  const handleResetDefaultData = async () => {
+    if (confirm('Bersihkan semua data agar aplikasi fresh dan kosong?')) {
+      saveCardsAndSync([]);
+      saveBrandsAndSync([]);
+      setSelectedBrandId('');
 
-      // Jika Supabase aktif, simpan ulang seed data
       if (isSupabaseConfigured()) {
-        initialBrands.forEach((b) => upsertBrandToSupabase(b));
-        initialContentCards.forEach((c) => upsertCardToSupabase(c));
+        try {
+          const { supabase } = await import('@/lib/supabaseClient');
+          if (supabase) {
+            await supabase.from('content_cards').delete().neq('id', '');
+            await supabase.from('brands').delete().neq('id', '');
+          }
+        } catch (e) {
+          console.warn('Gagal membersihkan database:', e);
+        }
       }
     }
   };
@@ -245,7 +276,21 @@ export default function DashboardPage() {
     }
   };
 
+  const openImportModal = () => {
+    if (!currentBrand.id) {
+      alert('Silakan tambahkan Klien terlebih dahulu sebelum mengimpor CSV.');
+      openCreateClientModal();
+      return;
+    }
+    setIsImportModalOpen(true);
+  };
+
   const openCreateModal = (initialStatus: ContentStatus = 'ide') => {
+    if (!currentBrand.id) {
+      alert('Silakan tambahkan Klien terlebih dahulu sebelum membuat kartu konten.');
+      openCreateClientModal();
+      return;
+    }
     setCreateInitialStatus(initialStatus);
     setIsCreateModalOpen(true);
   };
@@ -363,9 +408,16 @@ export default function DashboardPage() {
                     currentBrand={currentBrand}
                     brands={brands.filter((b) => b.id !== 'brand-kosong')}
                     onSelectBrand={(id) => setSelectedBrandId(id)}
-                    onOpenImportModal={() => setIsImportModalOpen(true)}
+                    onOpenImportModal={openImportModal}
                     onAddNewCard={() => openCreateModal('ide')}
-                    onEditBrand={() => openEditClientModal(currentBrand)}
+                    onAddNewBrand={openCreateClientModal}
+                    onEditBrand={() => {
+                      if (currentBrand.id) {
+                        openEditClientModal(currentBrand);
+                      } else {
+                        openCreateClientModal();
+                      }
+                    }}
                     onResetDefault={handleResetDefaultData}
                     totalCards={totalCards}
                     publishedCount={publishedCount}

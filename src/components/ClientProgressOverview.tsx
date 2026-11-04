@@ -161,8 +161,37 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
           </button>
         </div>
 
-        <div className="client-progress-grid">
-          {activeClients.map((client) => {
+        {activeClients.length === 0 ? (
+          <div
+            style={{
+              padding: '48px 24px',
+              textAlign: 'center',
+              background: 'var(--white)',
+              borderRadius: '12px',
+              border: '1px dashed var(--border-color)',
+              color: 'var(--text-secondary)',
+              marginTop: '12px',
+            }}
+          >
+            <p style={{ fontSize: '15px', fontWeight: 600, color: 'var(--navy-900)', marginBottom: '8px' }}>
+              Belum ada klien terdaftar
+            </p>
+            <p style={{ fontSize: '13px', marginBottom: '16px' }}>
+              Dashboard masih bersih dan fresh. Klik tombol di bawah untuk menambahkan klien pertamamu.
+            </p>
+            <button
+              type="button"
+              className="btn-brand-action btn-primary-action"
+              onClick={onAddNewBrand}
+              style={{ margin: '0 auto' }}
+            >
+              <Plus size={14} />
+              <span>+ Tambah Klien Pertama</span>
+            </button>
+          </div>
+        ) : (
+          <div className="client-progress-grid">
+            {activeClients.map((client) => {
             const clientCards = allCards.filter((c) => c.brandId === client.id);
 
             const ide = clientCards.filter((c) => normalizeCardStatus(c.status) === 'ide').length;
@@ -294,6 +323,7 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
             );
           })}
         </div>
+        )}
       </section>
     </div>
   );

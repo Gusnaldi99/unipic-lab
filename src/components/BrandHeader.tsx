@@ -10,6 +10,7 @@ interface BrandHeaderProps {
   onSelectBrand: (brandId: string) => void;
   onOpenImportModal: () => void;
   onAddNewCard?: () => void;
+  onAddNewBrand?: () => void;
   onEditBrand?: () => void;
   onResetDefault?: () => void;
   totalCards: number;
@@ -24,6 +25,7 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
   onSelectBrand,
   onOpenImportModal,
   onAddNewCard,
+  onAddNewBrand,
   onEditBrand,
   onResetDefault,
   totalCards,
@@ -33,43 +35,62 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
 }) => {
   const [copied, setCopied] = React.useState(false);
 
+  const mandatoryHashtags = currentBrand?.mandatoryHashtags || [];
+  const quota = currentBrand?.quota || { totalTarget: 0, videoTarget: 0, graphicTarget: 0 };
+
   const copyHashtags = () => {
-    if (currentBrand.mandatoryHashtags.length > 0) {
-      navigator.clipboard.writeText(currentBrand.mandatoryHashtags.join(' '));
+    if (mandatoryHashtags.length > 0) {
+      navigator.clipboard.writeText(mandatoryHashtags.join(' '));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
   };
 
-  const isBlankBrand = currentBrand.id === 'brand-kosong';
+  const isBlankBrand = !currentBrand?.id || currentBrand?.id === 'brand-kosong';
 
   return (
     <section className="brand-header-card" aria-label="Brand Profile & Quota">
       <div className="brand-top-row">
         <div className="brand-select-group">
           <div className="brand-avatar-box" aria-hidden="true">
-            {currentBrand.code}
+            {currentBrand?.code || '-'}
           </div>
           <div className="brand-title-wrap">
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <select
                 className="brand-dropdown-select"
-                value={currentBrand.id}
+                value={currentBrand?.id || ''}
                 onChange={(e) => onSelectBrand(e.target.value)}
                 aria-label="Select Client Brand"
               >
-                {brands.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.name}
-                  </option>
-                ))}
+                {brands.length === 0 ? (
+                  <option value="">Belum Ada Klien (Tambah Klien Baru)</option>
+                ) : (
+                  brands.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.name}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
-            <p>{currentBrand.category || 'Pilih atau kelola konten klien'}</p>
+            <p>{currentBrand?.category || 'Belum ada klien terdaftar'}</p>
           </div>
         </div>
 
         <div className="brand-actions-right">
+          {onAddNewBrand && (
+            <button
+              type="button"
+              className="btn-brand-action"
+              onClick={onAddNewBrand}
+              title="Tambah klien baru ke agensi"
+            >
+              <Plus size={13} />
+              <span>+ Klien Baru</span>
+            </button>
+          )}
+
           {onAddNewCard && (
             <button
               type="button"
@@ -87,14 +108,14 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
               type="button"
               className="btn-brand-action"
               onClick={onEditBrand}
-              title="Edit profil brand dan target kuota"
+              title={currentBrand?.id ? "Edit profil brand dan target kuota" : "Tambah Klien Baru"}
             >
               <Edit3 size={13} />
-              <span>Edit Brand</span>
+              <span>{currentBrand?.id ? "Edit Brand" : "Kelola Klien"}</span>
             </button>
           )}
 
-          {currentBrand.socialUrl && (
+          {currentBrand?.socialUrl && (
             <a
               href={currentBrand.socialUrl}
               target="_blank"
@@ -137,7 +158,7 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
           <span className="stat-pill-label">Target Konten Bulanan</span>
           <div className="stat-pill-values">
             <span className="stat-pill-main">
-              {totalCards} / {currentBrand.quota.totalTarget}
+              {totalCards} / {quota.totalTarget}
             </span>
             <span className="stat-pill-sub">
               {publishedCount} Tayang
@@ -150,7 +171,7 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
           <span className="stat-pill-label">Video / Reels / TikTok</span>
           <div className="stat-pill-values">
             <span className="stat-pill-main" style={{ color: 'var(--primary-600)' }}>
-              {videoCount} / {currentBrand.quota.videoTarget}
+              {videoCount} / {quota.videoTarget}
             </span>
             <span className="stat-pill-sub">Target Video</span>
           </div>
@@ -161,14 +182,14 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
           <span className="stat-pill-label">Foto & Desain Grafis</span>
           <div className="stat-pill-values">
             <span className="stat-pill-main" style={{ color: 'var(--success)' }}>
-              {graphicCount} / {currentBrand.quota.graphicTarget}
+              {graphicCount} / {quota.graphicTarget}
             </span>
             <span className="stat-pill-sub">Target Grafis</span>
           </div>
         </div>
 
         {/* Hashtag & Referensi */}
-        {!isBlankBrand && currentBrand.mandatoryHashtags.length > 0 && (
+        {!isBlankBrand && mandatoryHashtags.length > 0 && (
           <div className="stat-pill-box" style={{ gridColumn: 'span 2' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span className="stat-pill-label">Hashtag Wajib Brand</span>
@@ -183,7 +204,7 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
               </button>
             </div>
             <div className="hashtag-chips-container" style={{ marginTop: '4px' }}>
-              {currentBrand.mandatoryHashtags.map((h) => (
+              {mandatoryHashtags.map((h) => (
                 <span key={h} className="hashtag-chip">
                   {h}
                 </span>
