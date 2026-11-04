@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Menu, Search, Bell, X } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Menu, Search, Bell, X, LogOut, User as UserIcon } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 interface TopbarProps {
   title: string;
@@ -16,7 +18,36 @@ export const Topbar: React.FC<TopbarProps> = ({
   onSearchChange,
   onToggleSidebar,
 }) => {
+  const router = useRouter();
+  const { user, userName, userRole, signOut } = useAuth();
   const [mobileSearchActive, setMobileSearchActive] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSignOut = async () => {
+    setProfileDropdownOpen(false);
+    await signOut();
+    router.replace('/login');
+  };
+
+  // Initials
+  const initials = userName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((n) => n[0].toUpperCase())
+    .join('') || 'UL';
 
   return (
     <header className="topbar">
@@ -70,18 +101,41 @@ export const Topbar: React.FC<TopbarProps> = ({
             <span className="badge-count">Nov</span>
           </button>
 
-          {/* User Account */}
-          <div
-            className="user-profile"
-            tabIndex={0}
-            role="button"
-            aria-label="Profil Tim Internal Unipic Lab"
-          >
-            <div className="avatar">UL</div>
-            <div className="user-info">
-              <span className="user-name">Unipic Team</span>
-              <span className="user-role">Internal</span>
-            </div>
+          {/* User Account with Dropdown */}
+          <div className="user-profile-relative" ref={dropdownRef}>
+            <button
+              type="button"
+              className="user-profile-btn"
+              onClick={() => setProfileDropdownOpen((prev) => !prev)}
+              aria-expanded={profileDropdownOpen}
+              aria-label="Menu akun pengguna"
+            >
+              <div className="avatar">{initials}</div>
+              <div className="user-info desktop-only">
+                <span className="user-name">{userName}</span>
+                <span className="user-role">{userRole}</span>
+              </div>
+            </button>
+
+            {profileDropdownOpen && (
+              <div className="profile-dropdown-menu">
+                <div className="profile-dropdown-header">
+                  <div className="dropdown-user-name">{userName}</div>
+                  <div className="dropdown-user-email">{user?.email || 'Mode Tamu / Demo'}</div>
+                </div>
+
+                <div className="dropdown-divider" />
+
+                <button
+                  type="button"
+                  className="dropdown-item-btn danger-item"
+                  onClick={handleSignOut}
+                >
+                  <LogOut size={15} />
+                  <span>Keluar (Logout)</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Columns3, CalendarDays, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { WindowHeader } from '@/components/WindowHeader';
 import { Sidebar } from '@/components/Sidebar';
 import { Topbar } from '@/components/Topbar';
@@ -18,7 +20,7 @@ import {
   initialBrands,
   initialContentCards,
 } from '@/data/mockAgencyData';
-import { BrandProfile, ContentCardItem, ContentStatus } from '@/types/dashboard';
+import { BrandProfile, ContentCardItem, ContentStatus, TeamMember } from '@/types/dashboard';
 import {
   fetchBrandsFromSupabase,
   upsertBrandToSupabase,
@@ -26,6 +28,7 @@ import {
   fetchCardsFromSupabase,
   upsertCardToSupabase,
   deleteCardFromSupabase,
+  fetchTeamMembersFromSupabase,
 } from '@/lib/supabaseService';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 
@@ -33,6 +36,9 @@ const STORAGE_KEY = 'unipic_agency_content_cards_v1';
 const BRANDS_STORAGE_KEY = 'unipic_agency_brands_v1';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { user, loading: authLoading, userName } = useAuth();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,6 +49,13 @@ export default function DashboardPage() {
   const [allCards, setAllCards] = useState<ContentCardItem[]>(initialContentCards);
   const [activeViewMode, setActiveViewMode] = useState<'calendar' | 'kanban'>('calendar');
 
+  // Proteksi Route: Jika tidak ada user dan Supabase aktif, lempar ke /login
+  useEffect(() => {
+    if (!authLoading && !user && isSupabaseConfigured()) {
+      router.replace('/login');
+    }
+  }, [user, authLoading, router]);
+
   // Modals Content State
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -52,16 +65,22 @@ export default function DashboardPage() {
   // Modals Client State (CRUD Client)
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [brandToEdit, setBrandToEdit] = useState<BrandProfile | null>(null);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   // Load from Supabase (Cloud) with fallback to localStorage
   useEffect(() => {
     const initData = async () => {
       // 1. Jika Supabase dikonfigurasi, coba ambil data cloud
       if (isSupabaseConfigured()) {
-        const [cloudBrands, cloudCards] = await Promise.all([
+        const [cloudBrands, cloudCards, cloudMembers] = await Promise.all([
           fetchBrandsFromSupabase(),
           fetchCardsFromSupabase(),
+          fetchTeamMembersFromSupabase(),
         ]);
+
+        if (cloudMembers && cloudMembers.length > 0) {
+          setTeamMembers(cloudMembers);
+        }
 
         if (cloudBrands !== null) {
           setBrands(cloudBrands);
@@ -217,28 +236,46 @@ export default function DashboardPage() {
   // =========================================================================
 
   const handleCreateCard = (newCard: ContentCardItem) => {
-    saveCardsAndSync([newCard, ...allCards]);
-    upsertCardToSupabase(newCard);
+    const cardWithAudit: ContentCardItem = {
+      ...newCard,
+      updatedBy: userName,
+      updatedAt: new Date().toISOString(),
+    };
+    saveCardsAndSync([cardWithAudit, ...allCards]);
+    upsertCardToSupabase(cardWithAudit);
   };
 
   const handleUpdateCard = (updatedCard: ContentCardItem) => {
+    const cardWithAudit: ContentCardItem = {
+      ...updatedCard,
+      updatedBy: userName,
+      updatedAt: new Date().toISOString(),
+    };
     const updatedList = allCards.map((c) =>
-      c.id === updatedCard.id ? updatedCard : c
+      c.id === cardWithAudit.id ? cardWithAudit : c
     );
     saveCardsAndSync(updatedList);
-    setSelectedCardForDetail(updatedCard);
-    upsertCardToSupabase(updatedCard);
+    setSelectedCardForDetail(cardWithAudit);
+    upsertCardToSupabase(cardWithAudit);
   };
 
   const handleUpdateCardStatus = (cardId: string, newStatus: ContentStatus) => {
     const targetCard = allCards.find((c) => c.id === cardId);
+    const now = new Date().toISOString();
     const updatedList = allCards.map((card) =>
-      card.id === cardId ? { ...card, status: newStatus } : card
+      card.id === cardId
+        ? { ...card, status: newStatus, updatedBy: userName, updatedAt: now }
+        : card
     );
     saveCardsAndSync(updatedList);
 
     if (targetCard) {
-      upsertCardToSupabase({ ...targetCard, status: newStatus });
+      upsertCardToSupabase({
+        ...targetCard,
+        status: newStatus,
+        updatedBy: userName,
+        updatedAt: now,
+      });
     }
   };
 
@@ -323,6 +360,23 @@ export default function DashboardPage() {
     }
   };
 
+  if (authLoading) {
+    return (
+      <div className="login-screen-wrapper">
+        <div className="login-loading-card">
+          <div className="login-spinner" />
+          <p style={{ marginTop: '12px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+            Memuat sesi Unipic Lab...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user && isSupabaseConfigured()) {
+    return null;
+  }
+
   return (
     <>
       {/* Mobile Drawer Backdrop */}
@@ -356,6 +410,7 @@ export default function DashboardPage() {
         onClose={() => setIsCreateModalOpen(false)}
         brandId={currentBrand.id}
         initialStatus={createInitialStatus}
+        teamMembers={teamMembers}
         onCreateCard={handleCreateCard}
       />
 
@@ -364,6 +419,7 @@ export default function DashboardPage() {
         card={selectedCardForDetail}
         isOpen={!!selectedCardForDetail}
         onClose={() => setSelectedCardForDetail(null)}
+        teamMembers={teamMembers}
         onSaveCard={handleUpdateCard}
         onDeleteCard={handleDeleteCard}
       />

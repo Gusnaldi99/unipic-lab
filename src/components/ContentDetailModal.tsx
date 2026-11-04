@@ -17,12 +17,13 @@ import {
   Trash2,
   Edit3,
 } from 'lucide-react';
-import { ContentCardItem, ContentFormat, ContentStatus } from '@/types/dashboard';
+import { ContentCardItem, ContentFormat, ContentStatus, TeamMember } from '@/types/dashboard';
 
 interface ContentDetailModalProps {
   card: ContentCardItem | null;
   isOpen: boolean;
   onClose: () => void;
+  teamMembers?: TeamMember[];
   onSaveCard: (updatedCard: ContentCardItem) => void;
   onDeleteCard: (cardId: string) => void;
 }
@@ -31,6 +32,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
   card,
   isOpen,
   onClose,
+  teamMembers = [],
   onSaveCard,
   onDeleteCard,
 }) => {
@@ -51,6 +53,29 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
   const [editedLinkHasil, setEditedLinkHasil] = useState('');
   const [editedNotes, setEditedNotes] = useState('');
   const [editedStatus, setEditedStatus] = useState<ContentStatus>('ide');
+  const [editedAssigneeName, setEditedAssigneeName] = useState('');
+  const [editedAssigneeRole, setEditedAssigneeRole] = useState('');
+  const [editedAssigneeAvatarBg, setEditedAssigneeAvatarBg] = useState('#3B6EF5');
+
+  // Gabungkan daftar tim dari akun di database + card assignee saat ini
+  const effectiveMembers = React.useMemo(() => {
+    const list: TeamMember[] = [...teamMembers];
+    if (card?.assignee?.name && !list.some((m) => m.name.toLowerCase() === card.assignee.name.toLowerCase())) {
+      list.push({
+        name: card.assignee.name,
+        role: card.assignee.role || 'Creator',
+        avatarBg: card.assignee.avatarBg || '#3B6EF5',
+      });
+    }
+    if (list.length === 0) {
+      list.push({
+        name: 'Tim Internal',
+        role: 'Creator',
+        avatarBg: '#3B6EF5',
+      });
+    }
+    return list;
+  }, [teamMembers, card?.assignee]);
 
   useEffect(() => {
     if (card) {
@@ -66,6 +91,9 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
       setEditedLinkHasil(card.linkHasil || '');
       setEditedNotes(card.notes || '');
       setEditedStatus(card.status);
+      setEditedAssigneeName(card.assignee?.name || 'Tim Internal');
+      setEditedAssigneeRole(card.assignee?.role || 'Creator');
+      setEditedAssigneeAvatarBg(card.assignee?.avatarBg || '#3B6EF5');
       setIsEditing(false);
       setConfirmDelete(false);
       setCopiedCaption(false);
@@ -103,6 +131,11 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
       pillar: editedPillar.trim() || 'Edukasi',
       week: editedWeek,
       dueDate: editedDueDate || card.dueDate,
+      assignee: {
+        name: editedAssigneeName.trim() || card.assignee?.name || 'Tim Internal',
+        role: editedAssigneeRole || card.assignee?.role || 'Creator',
+        avatarBg: editedAssigneeAvatarBg || card.assignee?.avatarBg || '#3B6EF5',
+      },
       caption: editedCaption,
       captionSnippet: editedCaption ? editedCaption.slice(0, 100) + '...' : '',
       linkRef: editedLinkRef.trim(),
@@ -246,7 +279,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
         {/* Meta Bar: Due date, platform, pillar, assignee */}
         <div className="detail-meta-strip">
           {isEditing ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '8px', width: '100%' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', width: '100%' }}>
               <div>
                 <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>Target Tanggal:</label>
                 <input
@@ -275,6 +308,26 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                   onChange={(e) => setEditedPillar(e.target.value)}
                   placeholder="e.g. Edukasi / Promo"
                 />
+              </div>
+              <div>
+                <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>PIC Tim (Database):</label>
+                <select
+                  className="filter-select"
+                  style={{ width: '100%', height: '34px' }}
+                  value={editedAssigneeName}
+                  onChange={(e) => {
+                    const chosen = effectiveMembers.find((m) => m.name === e.target.value);
+                    setEditedAssigneeName(e.target.value);
+                    if (chosen?.role) setEditedAssigneeRole(chosen.role);
+                    if (chosen?.avatarBg) setEditedAssigneeAvatarBg(chosen.avatarBg);
+                  }}
+                >
+                  {effectiveMembers.map((m) => (
+                    <option key={m.name} value={m.name}>
+                      {m.name} ({m.role})
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           ) : (
@@ -349,12 +402,12 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
               {/* 1. Link Referensi */}
               <div className="link-item-row">
                 <div className="link-item-info">
-                  <span className="link-type-label">Link Referensi Konten</span>
+                  <span className="link-type-label">Link Referensi Konten (Opsional)</span>
                   {isEditing ? (
                     <input
-                      type="url"
+                      type="text"
                       className="detail-input-field"
-                      placeholder="https://instagram.com/reel/..."
+                      placeholder="https://instagram.com/reel/... (Boleh kosong)"
                       value={editedLinkRef}
                       onChange={(e) => setEditedLinkRef(e.target.value)}
                     />
@@ -369,7 +422,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                       <ExternalLink size={12} />
                     </a>
                   ) : (
-                    <span className="empty-link-tag">Belum ada link referensi</span>
+                    <span className="empty-link-tag">Belum ada link referensi (Opsional)</span>
                   )}
                 </div>
               </div>
@@ -377,12 +430,12 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
               {/* 2. Link Asset Edit / Bahan */}
               <div className="link-item-row">
                 <div className="link-item-info">
-                  <span className="link-type-label">Link Asset Edit / Bahan (Raw Footage)</span>
+                  <span className="link-type-label">Link Asset Edit / Bahan (Raw Footage) (Opsional)</span>
                   {isEditing ? (
                     <input
-                      type="url"
+                      type="text"
                       className="detail-input-field"
-                      placeholder="https://drive.google.com/..."
+                      placeholder="https://drive.google.com/... (Boleh kosong)"
                       value={editedLinkAsset}
                       onChange={(e) => setEditedLinkAsset(e.target.value)}
                     />
@@ -397,7 +450,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                       <ExternalLink size={12} />
                     </a>
                   ) : (
-                    <span className="empty-link-tag">Belum ada link asset</span>
+                    <span className="empty-link-tag">Belum ada link asset (Opsional)</span>
                   )}
                 </div>
               </div>
@@ -406,13 +459,13 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
               <div className="link-item-row highlight-hasil-row">
                 <div className="link-item-info">
                   <span className="link-type-label highlight-label">
-                    Link Hasil Jadi (Final Video / Graphic)
+                    Link Hasil Jadi (Final Video / Graphic) (Opsional)
                   </span>
                   {isEditing ? (
                     <input
-                      type="url"
+                      type="text"
                       className="detail-input-field"
-                      placeholder="https://drive.google.com/final..."
+                      placeholder="https://drive.google.com/final... (Boleh kosong)"
                       value={editedLinkHasil}
                       onChange={(e) => setEditedLinkHasil(e.target.value)}
                     />
@@ -428,7 +481,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                       <ExternalLink size={12} />
                     </a>
                   ) : (
-                    <span className="empty-link-tag">Belum diupload hasil jadi</span>
+                    <span className="empty-link-tag">Belum diupload hasil jadi (Opsional)</span>
                   )}
                 </div>
               </div>
@@ -453,6 +506,25 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
               </div>
             </div>
           </div>
+
+          {card.updatedBy && (
+            <div className="detail-audit-footer">
+              <User size={13} />
+              <span>
+                Terakhir diubah oleh <strong>{card.updatedBy}</strong>
+                {card.updatedAt
+                  ? ` • ${new Date(card.updatedAt).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })} pukul ${new Date(card.updatedAt).toLocaleTimeString('id-ID', {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}`
+                  : ''}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Modal Footer with Delete & Save */}

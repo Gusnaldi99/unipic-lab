@@ -1,5 +1,5 @@
 import { supabase, isSupabaseConfigured } from './supabaseClient';
-import { BrandProfile, ContentCardItem, ContentFormat, ContentStatus } from '@/types/dashboard';
+import { BrandProfile, ContentCardItem, ContentFormat, ContentStatus, TeamMember } from '@/types/dashboard';
 
 // ============================================================================
 // BRANDS REPOSITORY
@@ -123,6 +123,8 @@ export const fetchCardsFromSupabase = async (): Promise<ContentCardItem[] | null
       linkRef: c.link_ref || '',
       linkAsset: c.link_asset || '',
       linkHasil: c.link_hasil || '',
+      updatedBy: c.updated_by || '',
+      updatedAt: c.updated_at || '',
     }));
   } catch (err) {
     console.warn('Supabase fetch cards exception:', err);
@@ -153,6 +155,8 @@ export const upsertCardToSupabase = async (card: ContentCardItem): Promise<boole
       link_ref: card.linkRef || '',
       link_asset: card.linkAsset || '',
       link_hasil: card.linkHasil || '',
+      updated_by: card.updatedBy || '',
+      updated_at: card.updatedAt || new Date().toISOString(),
     };
 
     const { error } = await supabase.from('content_cards').upsert(row);
@@ -182,4 +186,85 @@ export const deleteCardFromSupabase = async (cardId: string): Promise<boolean> =
     return false;
   }
 };
+
+// ============================================================================
+// TEAM MEMBERS / PROFILES REPOSITORY
+// ============================================================================
+
+export const fetchTeamMembersFromSupabase = async (): Promise<TeamMember[] | null> => {
+  if (!isSupabaseConfigured() || !supabase) return null;
+
+  try {
+    // 1. Coba ambil dari tabel public.profiles (akun user dari Supabase Auth)
+    const { data: profiles, error } = await supabase
+      .from('profiles')
+      .select('id, full_name, role, avatar_bg, email')
+      .order('full_name', { ascending: true });
+
+    if (!error && profiles && profiles.length > 0) {
+      return profiles.map((p: any) => ({
+        id: p.id,
+        name: p.full_name || p.email?.split('@')[0] || 'Tim Member',
+        role: p.role || 'Creator / Editor',
+        avatarBg: p.avatar_bg || '#3B6EF5',
+        email: p.email || '',
+      }));
+    }
+  } catch (err) {
+    console.warn('Profiles table check exception:', err);
+  }
+
+  // 2. Fallback: Ambil distinct assignee dari content_cards di database
+  try {
+    const { data: cards, error: cardError } = await supabase
+      .from('content_cards')
+      .select('assignee_name, assignee_role, assignee_avatar_bg');
+
+    if (!cardError && cards && cards.length > 0) {
+      const memberMap = new Map<string, TeamMember>();
+      cards.forEach((c: any) => {
+        if (c.assignee_name && !memberMap.has(c.assignee_name.trim())) {
+          memberMap.set(c.assignee_name.trim(), {
+            name: c.assignee_name.trim(),
+            role: c.assignee_role || 'Creator',
+            avatarBg: c.assignee_avatar_bg || '#3B6EF5',
+          });
+        }
+      });
+      if (memberMap.size > 0) {
+        return Array.from(memberMap.values());
+      }
+    }
+  } catch (err) {
+    console.warn('Card assignees fallback exception:', err);
+  }
+
+  return null;
+};
+
+export const syncProfileToSupabase = async (user: any): Promise<void> => {
+  if (!isSupabaseConfigured() || !supabase || !user) return;
+
+  try {
+    const fullName =
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split('@')[0] ||
+      'Tim Member';
+
+    await supabase.from('profiles').upsert(
+      {
+        id: user.id,
+        email: user.email,
+        full_name: fullName,
+        role: 'Creator / Editor',
+        avatar_bg: '#3B6EF5',
+      },
+      { onConflict: 'id' }
+    );
+  } catch {
+    // Abaikan jika tabel profiles belum dibuat di Supabase SQL editor
+  }
+};
+
 

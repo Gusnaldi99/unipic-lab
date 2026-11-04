@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   X,
   PlusCircle,
@@ -11,13 +11,15 @@ import {
   Link as LinkIcon,
   FileText,
 } from 'lucide-react';
-import { ContentCardItem, ContentFormat, ContentStatus } from '@/types/dashboard';
+import { ContentCardItem, ContentFormat, ContentStatus, TeamMember } from '@/types/dashboard';
+import { useAuth } from '@/context/AuthContext';
 
 interface CreateContentModalProps {
   isOpen: boolean;
   onClose: () => void;
   brandId: string;
   initialStatus?: ContentStatus;
+  teamMembers?: TeamMember[];
   onCreateCard: (newCard: ContentCardItem) => void;
 }
 
@@ -26,8 +28,35 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
   onClose,
   brandId,
   initialStatus = 'ide',
+  teamMembers = [],
   onCreateCard,
 }) => {
+  const { userName, userRole } = useAuth();
+
+  // Kumpulkan list tim dari akun di database + user yang sedang login
+  const effectiveMembers = useMemo(() => {
+    const list: TeamMember[] = [...teamMembers];
+
+    // Sisipkan user yang sedang login jika belum ada di list
+    if (userName && !list.some((m) => m.name.toLowerCase() === userName.toLowerCase())) {
+      list.unshift({
+        name: userName,
+        role: userRole || 'Tim Internal',
+        avatarBg: '#3B6EF5',
+      });
+    }
+
+    if (list.length === 0) {
+      list.push({
+        name: 'Tim Internal',
+        role: 'Creator',
+        avatarBg: '#4338E8',
+      });
+    }
+
+    return list;
+  }, [teamMembers, userName, userRole]);
+
   const [title, setTitle] = useState('');
   const [format, setFormat] = useState<ContentFormat>('Video');
   const [platform, setPlatform] = useState('IG Reels & TikTok');
@@ -35,13 +64,28 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
   const [week, setWeek] = useState('Week 1');
   const [status, setStatus] = useState<ContentStatus>(initialStatus);
   const [dueDate, setDueDate] = useState('2026-11-15');
-  const [assigneeName, setAssigneeName] = useState('Rian Pratama');
+
+  // Assignee state
+  const [selectedAssignee, setSelectedAssignee] = useState('');
+  const [customAssignee, setCustomAssignee] = useState('');
+  const [isCustomAssignee, setIsCustomAssignee] = useState(false);
+
   const [caption, setCaption] = useState('');
   const [linkRef, setLinkRef] = useState('');
   const [linkAsset, setLinkAsset] = useState('');
   const [linkHasil, setLinkHasil] = useState('');
   const [notes, setNotes] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Sinkronkan default assignee saat modal dibuka
+  useEffect(() => {
+    if (isOpen) {
+      setStatus(initialStatus);
+      if (effectiveMembers.length > 0 && !selectedAssignee) {
+        setSelectedAssignee(effectiveMembers[0].name);
+      }
+    }
+  }, [isOpen, initialStatus, effectiveMembers, selectedAssignee]);
 
   if (!isOpen) return null;
 
@@ -50,6 +94,21 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
     if (!title.trim()) {
       setErrorMsg('Judul konten wajib diisi.');
       return;
+    }
+
+    // Tentukan data assignee
+    let finalAssigneeName = '';
+    let finalAssigneeRole = '';
+    let finalAvatarBg = '#3B6EF5';
+
+    if (isCustomAssignee) {
+      finalAssigneeName = customAssignee.trim() || 'Tim Internal';
+      finalAssigneeRole = format === 'Video' ? 'Video Editor' : 'Graphic Designer';
+    } else {
+      const found = effectiveMembers.find((m) => m.name === selectedAssignee) || effectiveMembers[0];
+      finalAssigneeName = found?.name || 'Tim Internal';
+      finalAssigneeRole = found?.role || (format === 'Video' ? 'Video Editor' : 'Graphic Designer');
+      finalAvatarBg = found?.avatarBg || '#3B6EF5';
     }
 
     const newCard: ContentCardItem = {
@@ -66,9 +125,9 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
       status: status,
       dueDate: dueDate || '2026-11-20',
       assignee: {
-        name: assigneeName,
-        role: format === 'Video' ? 'Video Editor' : 'Graphic Designer',
-        avatarBg: format === 'Video' ? '#3B6EF5' : '#EC4899',
+        name: finalAssigneeName,
+        role: finalAssigneeRole,
+        avatarBg: finalAvatarBg,
       },
       linkRef: linkRef.trim(),
       linkAsset: linkAsset.trim(),
@@ -76,6 +135,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
     };
 
     onCreateCard(newCard);
+
     // Reset form
     setTitle('');
     setCaption('');
@@ -84,6 +144,8 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
     setLinkHasil('');
     setNotes('');
     setErrorMsg('');
+    setIsCustomAssignee(false);
+    setCustomAssignee('');
     onClose();
   };
 
@@ -231,14 +293,35 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
               <select
                 className="filter-select"
                 style={{ width: '100%' }}
-                value={assigneeName}
-                onChange={(e) => setAssigneeName(e.target.value)}
+                value={isCustomAssignee ? '__custom__' : selectedAssignee}
+                onChange={(e) => {
+                  if (e.target.value === '__custom__') {
+                    setIsCustomAssignee(true);
+                  } else {
+                    setIsCustomAssignee(false);
+                    setSelectedAssignee(e.target.value);
+                  }
+                }}
               >
-                <option value="Rian Pratama">Rian Pratama (Video Editor)</option>
-                <option value="Sarah Kim">Sarah Kim (Graphic Designer)</option>
-                <option value="Dimas Aditya">Dimas Aditya (Copywriter)</option>
-                <option value="Elena Rostova">Elena Rostova (Scrum Master)</option>
+                {effectiveMembers.map((m) => (
+                  <option key={m.name} value={m.name}>
+                    {m.name} ({m.role})
+                  </option>
+                ))}
+                <option value="__custom__">+ Input PIC Manual...</option>
               </select>
+
+              {isCustomAssignee && (
+                <input
+                  type="text"
+                  className="detail-input-field"
+                  style={{ marginTop: '6px' }}
+                  placeholder="Ketik nama PIC tim..."
+                  value={customAssignee}
+                  onChange={(e) => setCustomAssignee(e.target.value)}
+                  autoFocus
+                />
+              )}
             </div>
           </div>
 
@@ -257,29 +340,29 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
           </div>
 
           {/* Links */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
             <div>
               <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                Link Referensi Konten
+                Link Referensi Konten <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(Opsional - Boleh Kosong)</span>
               </label>
               <input
-                type="url"
+                type="text"
                 className="detail-input-field"
                 value={linkRef}
                 onChange={(e) => setLinkRef(e.target.value)}
-                placeholder="https://instagram.com/reel/..."
+                placeholder="https://instagram.com/reel/... (Boleh kosong)"
               />
             </div>
             <div>
               <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                Link Hasil Jadi (Final Drive / File)
+                Link Hasil Jadi <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(Opsional)</span>
               </label>
               <input
-                type="url"
+                type="text"
                 className="detail-input-field"
                 value={linkHasil}
                 onChange={(e) => setLinkHasil(e.target.value)}
-                placeholder="https://drive.google.com/..."
+                placeholder="https://drive.google.com/... (Boleh kosong)"
               />
             </div>
           </div>
@@ -306,4 +389,3 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
     </div>
   );
 };
-

@@ -14,6 +14,14 @@ export interface Assignee {
   avatarBg: string;
 }
 
+export interface TeamMember {
+  id?: string;
+  name: string;
+  role: string;
+  avatarBg?: string;
+  email?: string;
+}
+
 export interface ContentCardItem {
   id: string;
   brandId: string;
@@ -31,6 +39,8 @@ export interface ContentCardItem {
   linkRef?: string;
   linkAsset?: string;
   linkHasil?: string;
+  updatedBy?: string;
+  updatedAt?: string;
 }
 
 export interface BrandProfile {

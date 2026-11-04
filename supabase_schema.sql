@@ -38,14 +38,31 @@ CREATE TABLE IF NOT EXISTS public.content_cards (
   link_ref TEXT,
   link_asset TEXT,
   link_hasil TEXT,
+  updated_by TEXT,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 3. ENABLE ROW LEVEL SECURITY (RLS) & POLICY AKSES PUBLIK / INTERNAL
+-- Migrasi tambahan untuk tabel yang sudah ada sebelumnya
+ALTER TABLE public.content_cards ADD COLUMN IF NOT EXISTS updated_by TEXT;
+ALTER TABLE public.content_cards ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW();
+
+-- 3. TABEL PROFILES (AKUN TIM SUPABASE AUTH)
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT,
+  full_name TEXT NOT NULL,
+  role TEXT DEFAULT 'Creator / Editor',
+  avatar_bg TEXT DEFAULT '#3B6EF5',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. ENABLE ROW LEVEL SECURITY (RLS) & POLICY AKSES PUBLIK / INTERNAL
 ALTER TABLE public.brands ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.content_cards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
--- Policy untuk mengizinkan akses anonim (tim internal menggunakan anon key)
+-- Policy untuk mengizinkan akses (tim internal)
 DROP POLICY IF EXISTS "Public access for brands" ON public.brands;
 CREATE POLICY "Public access for brands" ON public.brands
   FOR ALL USING (true) WITH CHECK (true);
@@ -54,7 +71,49 @@ DROP POLICY IF EXISTS "Public access for content_cards" ON public.content_cards;
 CREATE POLICY "Public access for content_cards" ON public.content_cards
   FOR ALL USING (true) WITH CHECK (true);
 
--- 4. INSERT INITIAL SEED DATA DARI CSV JETFIT KARAWACI & MOCK
+DROP POLICY IF EXISTS "Public access for profiles" ON public.profiles;
+CREATE POLICY "Public access for profiles" ON public.profiles
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- 5. TRIGGER & SYNC OTOMATIS DARI auth.users KE public.profiles
+-- Masukkan akun yang sudah terdaftar di auth.users ke public.profiles
+INSERT INTO public.profiles (id, email, full_name, role)
+SELECT 
+  id, 
+  email, 
+  COALESCE(raw_user_meta_data->>'full_name', split_part(email, '@', 1)),
+  'Tim Internal'
+FROM auth.users
+ON CONFLICT (id) DO UPDATE 
+SET 
+  email = EXCLUDED.email,
+  full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name);
+
+-- Trigger untuk akun baru saat mendaftar lewat auth.signUp
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, full_name, role)
+  VALUES (
+    new.id,
+    new.email,
+    COALESCE(new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
+    'Tim Internal'
+  )
+  ON CONFLICT (id) DO UPDATE
+  SET 
+    email = EXCLUDED.email,
+    full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name);
+  RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- 6. INSERT INITIAL SEED DATA DARI CSV JETFIT KARAWACI & MOCK
 INSERT INTO public.brands (id, name, code, category, social_url, references_text, mandatory_hashtags, quota_total, quota_video, quota_graphic)
 VALUES 
   ('jetfit-karawaci', 'Jet Fitness Karawaci', 'JF', 'Fitness & Gym Center', 'https://www.instagram.com/jetfitnesskarawaci/', 'FTL, WILLFITNESS, STRIDE, FIT HUB', ARRAY['#LetsJetFitTogether', '#JetPeople', '#JetFitnessKarawaci'], 20, 12, 8),

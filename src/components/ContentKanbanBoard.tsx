@@ -278,6 +278,25 @@ export const ContentKanbanBoard: React.FC<ContentKanbanBoardProps> = ({
                         <p className="card-caption-snippet">{card.captionSnippet}</p>
                       )}
 
+                      {card.updatedBy && (
+                        <div
+                          className="card-audit-badge"
+                          title={`Terakhir diubah oleh ${card.updatedBy}${
+                            card.updatedAt
+                              ? ` pada ${new Date(card.updatedAt).toLocaleTimeString('id-ID', {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                })}`
+                              : ''
+                          }`}
+                        >
+                          <span className="audit-dot" />
+                          <span className="audit-label">
+                            diubah oleh <strong>{card.updatedBy}</strong>
+                          </span>
+                        </div>
+                      )}
+
                       <div className="card-meta-bottom">
                         <div className="card-date-meta">
                           <Calendar size={11} strokeWidth={2} />
