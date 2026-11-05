@@ -16,6 +16,7 @@ import { CreateContentModal } from '@/components/CreateContentModal';
 import { ClientProgressOverview } from '@/components/ClientProgressOverview';
 import { ClientModal } from '@/components/ClientModal';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { ScriptBuilder } from '@/components/ScriptBuilder';
 import {
   initialBrands,
   initialContentCards,
@@ -116,12 +117,16 @@ export default function DashboardPage() {
         const savedBrands = localStorage.getItem(BRANDS_STORAGE_KEY);
         if (savedBrands) {
           const parsedB = JSON.parse(savedBrands);
-          if (Array.isArray(parsedB)) {
+          if (Array.isArray(parsedB) && parsedB.length > 0) {
             setBrands(parsedB);
-            if (parsedB.length > 0) {
-              setSelectedBrandId((prev) => prev || parsedB[0].id);
-            }
+            setSelectedBrandId((prev) => prev || parsedB[0].id);
+          } else if (initialBrands.length > 0) {
+            setBrands(initialBrands);
+            setSelectedBrandId((prev) => prev || initialBrands[0].id);
           }
+        } else if (initialBrands.length > 0) {
+          setBrands(initialBrands);
+          setSelectedBrandId((prev) => prev || initialBrands[0].id);
         }
       } catch (e) {
         console.warn('Could not read from localStorage', e);
@@ -350,7 +355,7 @@ export default function DashboardPage() {
       case 'kanban':
         return `Pipeline Produksi (Drag & Drop) · ${currentBrand.name}`;
       case 'scripts':
-        return 'Skrip Builder (Coming Soon)';
+        return `Skrip Builder · SOP Konten Kreatif v2.0 · ${currentBrand.name}`;
       case 'captions':
         return 'Caption Builder (Coming Soon)';
       case 'reports':
@@ -570,9 +575,25 @@ export default function DashboardPage() {
               )}
 
               {/* ========================================================
-                  TAB 3: COMING SOON MODULES
+                  TAB 3: SKRIP BUILDER (SOP STRATEGI KONTEN v2.0)
                   ======================================================== */}
-              {(activeMenu === 'scripts' || activeMenu === 'captions' || activeMenu === 'reports') && (
+              {activeMenu === 'scripts' && (
+                <ScriptBuilder
+                  currentBrand={currentBrand}
+                  brands={brands.filter((b) => b.id !== 'brand-kosong')}
+                  onSelectBrand={(brandId) => setSelectedBrandId(brandId)}
+                  onCreateCard={handleCreateCard}
+                  onNavigateToCalendar={() => {
+                    setActiveMenu('calendar');
+                    setActiveViewMode('calendar');
+                  }}
+                />
+              )}
+
+              {/* ========================================================
+                  TAB 4: COMING SOON MODULES
+                  ======================================================== */}
+              {(activeMenu === 'captions' || activeMenu === 'reports') && (
                 <div
                   style={{
                     background: '#FFFFFF',
@@ -601,10 +622,10 @@ export default function DashboardPage() {
                     <CheckCircle2 size={24} />
                   </div>
                   <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--navy-900)' }}>
-                    Modul {activeMenu === 'scripts' ? 'Skrip Builder' : activeMenu === 'captions' ? 'Caption Builder' : 'Report Klien'} (Coming Soon)
+                    Modul {activeMenu === 'captions' ? 'Caption Builder' : 'Report Klien'} (Coming Soon)
                   </h3>
                   <p style={{ fontSize: '12px', color: 'var(--text-secondary)', maxWidth: '420px', lineHeight: 1.5 }}>
-                    Fitur ini sedang dalam antrean rilis untuk automasi penulisan skrip video, penyusunan caption berbasis pilar, dan analitik laporan klien.
+                    Fitur ini sedang dalam antrean rilis untuk automasi penyusunan caption berbasis pilar dan analitik laporan performa klien.
                   </p>
                   <button
                     type="button"

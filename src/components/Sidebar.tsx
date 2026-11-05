@@ -21,7 +21,7 @@ const navItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'calendar', label: 'Konten Kalender', icon: CalendarDays },
   { id: 'kanban', label: 'Pipeline Produksi', icon: Columns3 },
-  { id: 'scripts', label: 'Skrip Builder', icon: FileEdit, isSoon: true },
+  { id: 'scripts', label: 'Skrip Builder', icon: FileEdit },
   { id: 'captions', label: 'Caption Builder', icon: PenTool, isSoon: true },
   { id: 'reports', label: 'Report Klien', icon: BarChart3, isSoon: true },
 ];
