@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { LayoutDashboard, CalendarDays, Columns3, Menu } from 'lucide-react';
+import { LayoutDashboard, CalendarDays, Columns3, FileEdit, Menu } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeMenu: string;
@@ -44,6 +44,16 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       >
         <Columns3 size={20} strokeWidth={activeMenu === 'kanban' ? 2.2 : 1.8} />
         <span className="mobile-nav-label">Pipeline</span>
+      </button>
+
+      <button
+        type="button"
+        className={`mobile-nav-btn ${activeMenu === 'scripts' ? 'active' : ''}`}
+        onClick={() => onSelectMenu('scripts')}
+        aria-current={activeMenu === 'scripts' ? 'page' : undefined}
+      >
+        <FileEdit size={20} strokeWidth={activeMenu === 'scripts' ? 2.2 : 1.8} />
+        <span className="mobile-nav-label">Skrip</span>
       </button>
 
       <button

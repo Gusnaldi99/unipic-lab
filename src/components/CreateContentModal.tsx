@@ -195,7 +195,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
           {/* Grid Format, Week, Status */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Format Konten
               </label>
               <select
@@ -212,7 +212,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
             </div>
 
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Minggu
               </label>
               <select
@@ -229,7 +229,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
             </div>
 
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Status Tahapan
               </label>
               <select
@@ -246,7 +246,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
             </div>
 
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Target Tanggal Tayang
               </label>
               <input
@@ -261,7 +261,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
           {/* Platform, Pillar, Assignee */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Platform Post
               </label>
               <input
@@ -274,7 +274,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
             </div>
 
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Pilar Konten
               </label>
               <input
@@ -287,7 +287,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
             </div>
 
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 PIC Tim (Assignee)
               </label>
               <select
@@ -327,7 +327,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
 
           {/* Caption */}
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+            <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Caption & Copywriting (Opsional)
             </label>
             <textarea
@@ -342,8 +342,8 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
           {/* Links */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                Link Referensi Konten <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(Opsional - Boleh Kosong)</span>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+                Link Referensi Konten <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(Opsional)</span>
               </label>
               <input
                 type="text"
@@ -354,7 +354,7 @@ export const CreateContentModal: React.FC<CreateContentModalProps> = ({
               />
             </div>
             <div>
-              <label style={{ fontSize: '10px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Link Hasil Jadi <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>(Opsional)</span>
               </label>
               <input

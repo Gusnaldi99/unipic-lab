@@ -54,6 +54,7 @@ import {
   getHookPrimaryChoices,
   getCtaAudioChoices,
 } from '@/data/scriptSopData';
+import { FULL_SOP_DOCUMENT_TEXT } from '@/data/sopContentGuide';
 import { BrandProfile, ContentCardItem } from '@/types/dashboard';
 
 interface MultipleChoiceSelectorProps {
@@ -88,22 +89,23 @@ const MultipleChoiceSelector: React.FC<MultipleChoiceSelectorProps> = ({
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '5px',
-                padding: '4px 9px',
-                borderRadius: '16px',
-                border: isSelected ? '1.5px solid var(--primary-600)' : '1px solid #E2E8F0',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '20px',
+                border: isSelected ? '1.5px solid var(--primary-600)' : '1px solid #CBD5E1',
                 background: isSelected ? 'var(--primary-50)' : '#F8FAFC',
-                color: isSelected ? 'var(--primary-700)' : '#334155',
-                fontSize: '11px',
+                color: isSelected ? 'var(--primary-700)' : '#1E293B',
+                fontSize: '13px',
                 fontWeight: isSelected ? 700 : 500,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease',
+                minHeight: '34px',
               }}
             >
               {isSelected ? (
-                <Check size={11} color="var(--primary-600)" strokeWidth={3} />
+                <Check size={13} color="var(--primary-600)" strokeWidth={3} />
               ) : (
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#CBD5E1' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#94A3B8' }} />
               )}
               <span>{opt}</span>
             </button>
@@ -116,7 +118,7 @@ const MultipleChoiceSelector: React.FC<MultipleChoiceSelectorProps> = ({
   // Stack layout: format pilihan ganda [A], [B], [C], [D]
   const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', margin: '4px 0 6px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', margin: '4px 0 6px' }}>
       {options.map((opt, i) => {
         const isSelected = selectedValue.trim() === opt.trim();
         const letter = letters[i] || `${i + 1}`;
@@ -135,14 +137,15 @@ const MultipleChoiceSelector: React.FC<MultipleChoiceSelectorProps> = ({
             style={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '8px',
-              padding: '6px 9px',
-              borderRadius: '6px',
+              gap: '10px',
+              padding: '8px 12px',
+              borderRadius: '8px',
               border: isSelected ? '1.5px solid var(--primary-600)' : '1px solid #E2E8F0',
               background: isSelected ? 'var(--primary-50)' : '#FAFAFC',
               cursor: 'pointer',
               transition: 'all 0.12s ease',
               textAlign: 'left',
+              minHeight: '38px',
             }}
           >
             <span
@@ -150,25 +153,25 @@ const MultipleChoiceSelector: React.FC<MultipleChoiceSelectorProps> = ({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                minWidth: '19px',
-                height: '19px',
+                minWidth: '22px',
+                height: '22px',
                 borderRadius: '50%',
                 background: isSelected ? 'var(--primary-600)' : '#E2E8F0',
-                color: isSelected ? '#FFFFFF' : '#475569',
-                fontSize: '10px',
+                color: isSelected ? '#FFFFFF' : '#334155',
+                fontSize: '11px',
                 fontWeight: 800,
                 flexShrink: 0,
                 marginTop: '1px',
               }}
             >
-              {isSelected ? <Check size={11} strokeWidth={3} /> : letter}
+              {isSelected ? <Check size={12} strokeWidth={3} /> : letter}
             </span>
             <span
               style={{
-                fontSize: '11.5px',
-                color: isSelected ? 'var(--navy-900)' : '#334155',
+                fontSize: '13px',
+                color: isSelected ? 'var(--navy-900)' : '#1E293B',
                 fontWeight: isSelected ? 600 : 400,
-                lineHeight: 1.35,
+                lineHeight: 1.4,
                 flex: 1,
               }}
             >
@@ -461,9 +464,10 @@ Status: Siap Review Creative Director (SLA: Maks. 1 Hari Kerja)
     const brandHandle = activeBrandProfile?.handle || currentBrand?.socialUrl || '@brandklien';
 
     return `# PERAN & IDENTITAS
-Kamu adalah Senior Content Writer dan Short-Form Video Strategist yang bekerja dengan Standar Operasional Prosedur (SOP) Strategi Penulisan Konten Kreatif. Tugasmu adalah menulis skrip video pendek yang dirancang khusus untuk mempertahankan retensi audiens tinggi (Watch-Through Rate) dan memicu aksi nyata.
+Kamu adalah Senior Content Writer dan Short-Form Video Strategist yang bekerja menggunakan modul resmi: "STANDAR OPERASIONAL PROSEDUR (SOP) STRATEGI PENULISAN KONTEN KREATIF v2.0". Tugasmu adalah menulis skrip video pendek yang dirancang khusus untuk mempertahankan retensi audiens tinggi (Watch-Through Rate) dan memicu aksi nyata.
 
-Kamu wajib mematuhi seluruh aturan SOP di bawah ini secara ketat. Dilarang menambahkan angka fiktif, klaim ilmiah tanpa dasar, atau data statistik yang tidak tercantum dalam input saya.
+⚠️ PANDUAN ACUAN LENGKAP SUDAH TERSEDIA DI DALAM PROMPT INI:
+Seluruh dokumen modul panduan resmi (BAB 1 sampai BAB 11: filosofi konten, formula 9 hook, struktur 4 bagian skrip, checklist QC, hierarki KPI, hingga strategi distribusi) TELAH DILAMPIRKAN SECARA LENGKAP PADA BAGIAN BAWAH PROMPT INI. Kamu tidak perlu menanyakan letak panduannya atau meminta dokumen eksternal, cukup baca dan patuhi lampiran SOP tersebut secara ketat. Dilarang menambahkan angka fiktif, klaim ilmiah tanpa dasar, atau data statistik yang tidak tercantum dalam input saya.
 
 ---
 
@@ -531,6 +535,13 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
 5. Rekomendasi Distribusi Strategi 3 Level BAB 5 (Level 1 Prime Time, Level 2 Clipper & Media Promote, Level 3 WhatsApp & Komunitas, Pinned Comment, Cover Thumbnail).
 6. Caption Siap Posting TikTok/Reels (Opsi A Ringkas & Opsi B Storytelling/Interaktif + Hashtag Relevan).
 7. Dokumen Berkas Siap Produksi (Sertakan format berkas PDF / dokumen utuh untuk tim produksi).
+
+---
+
+# DOKUMEN PANDUAN UTAMA: MODUL STANDAR OPERASIONAL PROSEDUR (SOP) STRATEGI PENULISAN KONTEN KREATIF v2.0
+Jadikan dokumen panduan resmi SOP di bawah ini sebagai landasan filosofi konten, mekanisme 9 hook, formula penulisan skrip, rubrik penilaian, target KPI, dan strategi distribusi:
+
+${FULL_SOP_DOCUMENT_TEXT}
 `;
   };
 
@@ -629,9 +640,9 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               <span
                 style={{
                   background: 'rgba(255, 255, 255, 0.15)',
-                  padding: '3px 9px',
+                  padding: '4px 10px',
                   borderRadius: '12px',
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700,
                   letterSpacing: '0.5px',
                   textTransform: 'uppercase',
@@ -639,12 +650,12 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               >
                 SOP KONTEN v2.0 & DATA AKUN MASTER
               </span>
-              <span style={{ fontSize: '12px', color: '#B4B9DC' }}>Senior Writer & Creative Director</span>
+              <span style={{ fontSize: '13px', color: '#B4B9DC' }}>Senior Writer & Creative Director</span>
             </div>
             <h2 style={{ fontSize: '22px', fontWeight: 800, margin: 0, letterSpacing: '-0.3px', color: '#FFFFFF' }}>
               Skrip Builder — Mesin Retensi Video Pendek
             </h2>
-            <p style={{ fontSize: '13px', color: '#B4B9DC', margin: '6px 0 0', maxWidth: '640px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '14px', color: '#B4B9DC', margin: '6px 0 0', maxWidth: '640px', lineHeight: 1.5 }}>
               Standardisasi penulisan skenario video <strong>Formula 4-Bagian</strong> (Hook, Bridge, Body, CTA), 
               <strong> 9 Klasifikasi Hook</strong>, evaluasi retensi 3 detik pertama, dan panduan Do&apos;s & Don&apos;ts klien.
             </p>
@@ -652,7 +663,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
 
           {/* Quick Client Switcher */}
           <div style={{ background: 'rgba(255, 255, 255, 0.08)', padding: '12px 16px', borderRadius: '8px', minWidth: '240px' }}>
-            <label style={{ display: 'block', fontSize: '11px', color: '#9AA0B4', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 600 }}>
+            <label style={{ display: 'block', fontSize: '12px', color: '#CBD5E1', marginBottom: '4px', textTransform: 'uppercase', fontWeight: 700 }}>
               Klien Aktif
             </label>
             <select
@@ -661,11 +672,11 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               style={{
                 width: '100%',
                 background: '#FFFFFF',
-                color: '#1A1D3A',
+                color: '#0F172A',
                 border: 'none',
                 borderRadius: '6px',
-                padding: '7px 10px',
-                fontSize: '13px',
+                padding: '8px 12px',
+                fontSize: '14px',
                 fontWeight: 600,
                 outline: 'none',
                 cursor: 'pointer',
@@ -678,7 +689,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               ))}
             </select>
             {activeBrandProfile && (
-              <span style={{ display: 'block', fontSize: '11px', color: '#B4B9DC', marginTop: '4px' }}>
+              <span style={{ display: 'block', fontSize: '12px', color: '#CBD5E1', marginTop: '6px' }}>
                 {activeBrandProfile.handle} • {activeBrandProfile.category.split('(')[0]}
               </span>
             )}
@@ -699,8 +710,8 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', flexWrap: 'wrap' }}>
-                <span style={{ background: 'var(--primary-600)', padding: '2px 8px', borderRadius: '4px', fontWeight: 700, fontSize: '11px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', flexWrap: 'wrap' }}>
+                <span style={{ background: 'var(--primary-600)', padding: '3px 9px', borderRadius: '4px', fontWeight: 700, fontSize: '12px' }}>
                   BRAND INTELLIGENCE
                 </span>
                 <span><strong>Voice & Tone:</strong> {activeBrandProfile.voiceTone.split('.')[0]}</span>
@@ -719,18 +730,18 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '5px',
+                      gap: '6px',
                       background: 'rgba(255, 255, 255, 0.18)',
                       border: '1px solid rgba(255, 255, 255, 0.25)',
                       color: '#FFFFFF',
-                      padding: '4px 10px',
-                      borderRadius: '5px',
-                      fontSize: '11px',
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
                       fontWeight: 700,
                       cursor: 'pointer',
                     }}
                   >
-                    <Sparkles size={12} color="#F59E3F" />
+                    <Sparkles size={14} color="#F59E3F" />
                     <span>Muat Blueprint: {activeBrandProfile.presets[0].name}</span>
                   </button>
                 )}
@@ -745,13 +756,13 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     background: 'none',
                     border: 'none',
                     color: '#B4B9DC',
-                    fontSize: '11px',
+                    fontSize: '12px',
                     fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
                   <span>{showBrandGuidelines ? 'Tutup Panduan' : 'Lihat Do’s & Don’ts'}</span>
-                  {showBrandGuidelines ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+                  {showBrandGuidelines ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 </button>
               </div>
             </div>
@@ -768,22 +779,22 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   marginTop: '4px',
                 }}
               >
-                <div style={{ background: 'rgba(34, 160, 107, 0.12)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid #22A06B' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 800, color: '#34C77B', display: 'block', marginBottom: '4px' }}>
+                <div style={{ background: 'rgba(34, 160, 107, 0.12)', padding: '12px 14px', borderRadius: '6px', borderLeft: '3px solid #22A06B' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#34C77B', display: 'block', marginBottom: '6px' }}>
                     ✅ BRAND DO&apos;S ({activeBrandProfile.brandName})
                   </span>
-                  <ul style={{ margin: 0, paddingLeft: '14px', fontSize: '11px', color: '#E8EAFF', lineHeight: 1.4 }}>
+                  <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: '#F1F5F9', lineHeight: 1.5 }}>
                     {activeBrandProfile.dos.map((d, i) => (
                       <li key={i}>{d}</li>
                     ))}
                   </ul>
                 </div>
 
-                <div style={{ background: 'rgba(239, 68, 68, 0.12)', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid #EF4444' }}>
-                  <span style={{ fontSize: '11px', fontWeight: 800, color: '#F87171', display: 'block', marginBottom: '4px' }}>
+                <div style={{ background: 'rgba(239, 68, 68, 0.12)', padding: '12px 14px', borderRadius: '6px', borderLeft: '3px solid #EF4444' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#F87171', display: 'block', marginBottom: '6px' }}>
                     ❌ BRAND DON&apos;TS (Wajib Dihindari)
                   </span>
-                  <ul style={{ margin: 0, paddingLeft: '14px', fontSize: '11px', color: '#E8EAFF', lineHeight: 1.4 }}>
+                  <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: '#F1F5F9', lineHeight: 1.5 }}>
                     {activeBrandProfile.donts.map((d, i) => (
                       <li key={i}>{d}</li>
                     ))}
@@ -796,102 +807,58 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
       </div>
 
       {/* =========================================================================
-          MAIN NAVIGATION SUB-TABS
+          MAIN NAVIGATION SUB-TABS (MOBILE TOUCH FRIENDLY)
           ========================================================================= */}
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          borderBottom: '1px solid var(--border)',
-          paddingBottom: '4px',
-          overflowX: 'auto',
-        }}
-      >
+      <div className="script-nav-tabs-wrapper">
         <button
           type="button"
           onClick={() => setActiveTab('builder')}
+          className="script-tab-btn"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
             background: activeTab === 'builder' ? 'var(--primary-600)' : 'transparent',
             color: activeTab === 'builder' ? '#FFFFFF' : 'var(--text-secondary)',
-            fontWeight: 600,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
           }}
         >
-          <FileText size={16} />
+          <FileText size={17} />
           <span>Editor Skrip & Pacing SOP</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('handbook')}
+          className="script-tab-btn"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
             background: activeTab === 'handbook' ? 'var(--primary-600)' : 'transparent',
             color: activeTab === 'handbook' ? '#FFFFFF' : 'var(--text-secondary)',
-            fontWeight: 600,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
           }}
         >
-          <BookOpen size={16} />
+          <BookOpen size={17} />
           <span>9 Klasifikasi Hook & SOP Handbook</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('rubric')}
+          className="script-tab-btn"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
             background: activeTab === 'rubric' ? 'var(--primary-600)' : 'transparent',
             color: activeTab === 'rubric' ? '#FFFFFF' : 'var(--text-secondary)',
-            fontWeight: 600,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
           }}
         >
-          <ShieldCheck size={16} />
+          <ShieldCheck size={17} />
           <span>Rubrik Skor Hook & Anti-Pattern</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('kpi')}
+          className="script-tab-btn"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 16px',
-            borderRadius: '6px',
-            border: 'none',
             background: activeTab === 'kpi' ? 'var(--primary-600)' : 'transparent',
             color: activeTab === 'kpi' ? '#FFFFFF' : 'var(--text-secondary)',
-            fontWeight: 600,
-            fontSize: '13px',
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
           }}
         >
-          <Target size={16} />
+          <Target size={17} />
           <span>Target KPI & Diagnosis (BAB 4)</span>
         </button>
       </div>
@@ -900,7 +867,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
           TAB 1: SCRIPT BUILDER WORKSPACE
           ========================================================================= */}
       {activeTab === 'builder' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 340px', gap: '20px', alignItems: 'start' }}>
+        <div className="script-builder-main-grid">
           {/* Main Content Area */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {/* View Mode Toolbar: Form / Table / Muted Preview */}
@@ -917,7 +884,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                 gap: '10px',
               }}
             >
-              <div style={{ display: 'flex', gap: '6px' }}>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                 <button
                   type="button"
                   onClick={() => setEditorViewMode('form')}
@@ -925,17 +892,18 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '6px 12px',
-                    borderRadius: '5px',
+                    padding: '8px 14px',
+                    borderRadius: '6px',
                     border: 'none',
                     background: editorViewMode === 'form' ? 'var(--primary-50)' : 'transparent',
                     color: editorViewMode === 'form' ? 'var(--primary-600)' : 'var(--text-secondary)',
                     fontWeight: 600,
-                    fontSize: '12px',
+                    fontSize: '13px',
                     cursor: 'pointer',
+                    minHeight: '38px',
                   }}
                 >
-                  <FileText size={14} />
+                  <FileText size={15} />
                   <span>Formulir Editor 4-Bagian</span>
                 </button>
 
@@ -946,17 +914,18 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '6px 12px',
-                    borderRadius: '5px',
+                    padding: '8px 14px',
+                    borderRadius: '6px',
                     border: 'none',
                     background: editorViewMode === 'table' ? 'var(--primary-50)' : 'transparent',
                     color: editorViewMode === 'table' ? 'var(--primary-600)' : 'var(--text-secondary)',
                     fontWeight: 600,
-                    fontSize: '12px',
+                    fontSize: '13px',
                     cursor: 'pointer',
+                    minHeight: '38px',
                   }}
                 >
-                  <Table size={14} />
+                  <Table size={15} />
                   <span>Tabel Standar SOP (BAB 3.2)</span>
                 </button>
 
@@ -967,17 +936,18 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     display: 'flex',
                     alignItems: 'center',
                     gap: '6px',
-                    padding: '6px 12px',
-                    borderRadius: '5px',
+                    padding: '8px 14px',
+                    borderRadius: '6px',
                     border: 'none',
                     background: editorViewMode === 'muted' ? 'var(--primary-50)' : 'transparent',
                     color: editorViewMode === 'muted' ? 'var(--primary-600)' : 'var(--text-secondary)',
                     fontWeight: 600,
-                    fontSize: '12px',
+                    fontSize: '13px',
                     cursor: 'pointer',
+                    minHeight: '38px',
                   }}
                 >
-                  <VolumeX size={14} />
+                  <VolumeX size={15} />
                   <span>Simulasi Muted-First (BAB 3.4)</span>
                 </button>
               </div>
@@ -986,18 +956,18 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span
                   style={{
-                    fontSize: '11px',
+                    fontSize: '12px',
                     fontWeight: 700,
-                    padding: '3px 8px',
+                    padding: '4px 10px',
                     borderRadius: '12px',
                     background: pacingInfo.status === 'ideal' ? '#E6F7EE' : '#FFF4DC',
                     color: pacingInfo.status === 'ideal' ? '#22A06B' : '#F5A524',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px',
+                    gap: '5px',
                   }}
                 >
-                  <Clock size={12} />
+                  <Clock size={13} />
                   {pacingInfo.totalWords} kata (~{pacingInfo.estimatedSeconds} dtk)
                 </span>
               </div>
@@ -1019,22 +989,22 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                    <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary-600)', background: 'var(--primary-50)', padding: '2px 8px', borderRadius: '4px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--primary-600)', background: 'var(--primary-50)', padding: '3px 8px', borderRadius: '4px' }}>
                       LANGKAH 01
                     </span>
-                    <h3 style={{ fontSize: '15px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
+                    <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
                       Content Brief & Pilar Sasaran
                     </h3>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                    <div style={{ gridColumn: 'span 2' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  <div className="script-two-col-grid">
+                    <div style={{ gridColumn: '1 / -1' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
                           Judul Konten / Topik Utama *
                         </label>
-                        <span style={{ fontSize: '11px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Sparkles size={11} /> Pilihan Ganda Judul:
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Sparkles size={13} /> Pilihan Ganda Judul:
                         </span>
                       </div>
                       <MultipleChoiceSelector
@@ -1050,22 +1020,22 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         placeholder="Atau sesuaikan / ketik judul manual di sini..."
                         style={{
                           width: '100%',
-                          padding: '8px 12px',
-                          borderRadius: '6px',
+                          padding: '10px 14px',
+                          borderRadius: '8px',
                           border: '1px solid var(--border)',
-                          fontSize: '13px',
+                          fontSize: '14px',
                           outline: 'none',
-                          marginTop: '4px',
+                          marginTop: '6px',
                         }}
                       />
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
                           Pilar Konten (SOP BAB 7)
                         </label>
-                        <span style={{ fontSize: '11px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                           Pilih Pilar:
                         </span>
                       </div>
@@ -1080,12 +1050,12 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         onChange={(e) => setPillar(e.target.value)}
                         style={{
                           width: '100%',
-                          padding: '7px 10px',
+                          padding: '8px 12px',
                           borderRadius: '6px',
                           border: '1px solid var(--border)',
-                          fontSize: '12px',
+                          fontSize: '13px',
                           background: '#FFFFFF',
-                          marginTop: '4px',
+                          marginTop: '6px',
                         }}
                       >
                         {activeBrandProfile?.pillars.map((pil) => (
@@ -1105,10 +1075,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     </div>
 
                     <div>
-                      <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '5px' }}>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
                         Tujuan Konten (Wajib SATU Tujuan)
                       </label>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '8px' }}>
                         {(['awareness', 'engagement', 'conversion'] as const).map((obj) => (
                           <button
                             key={obj}
@@ -1116,23 +1086,24 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                             onClick={() => setObjective(obj)}
                             style={{
                               flex: 1,
-                              padding: '7px 4px',
+                              padding: '8px 6px',
                               borderRadius: '6px',
                               border: objective === obj ? '1.5px solid var(--primary-600)' : '1px solid var(--border)',
                               background: objective === obj ? 'var(--primary-50)' : '#FFFFFF',
                               color: objective === obj ? 'var(--primary-600)' : 'var(--text-secondary)',
-                              fontSize: '11px',
+                              fontSize: '12px',
                               fontWeight: 700,
                               textTransform: 'capitalize',
                               cursor: 'pointer',
+                              minHeight: '38px',
                             }}
                           >
                             {obj}
                           </button>
                         ))}
                       </div>
-                      <div style={{ marginTop: '8px' }}>
-                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '2px' }}>
+                      <div style={{ marginTop: '10px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
                           Target Durasi Video:
                         </label>
                         <MultipleChoiceSelector
@@ -1145,12 +1116,12 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
                           Target Audiens Spesifik (Persona)
                         </label>
-                        <span style={{ fontSize: '11px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Sparkles size={11} /> Pilihan Persona:
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Sparkles size={13} /> Pilihan Persona:
                         </span>
                       </div>
                       <MultipleChoiceSelector
@@ -1166,23 +1137,23 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         placeholder="Atau ketik persona spesifik di sini..."
                         style={{
                           width: '100%',
-                          padding: '8px 12px',
-                          borderRadius: '6px',
+                          padding: '10px 14px',
+                          borderRadius: '8px',
                           border: '1px solid var(--border)',
-                          fontSize: '13px',
+                          fontSize: '14px',
                           outline: 'none',
-                          marginTop: '4px',
+                          marginTop: '6px',
                         }}
                       />
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                        <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
                           Keyword Utama (SEO Sosmed Triple Mention)
                         </label>
-                        <span style={{ fontSize: '11px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          <Sparkles size={11} /> Pilihan Keyword:
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          <Sparkles size={13} /> Pilihan Keyword:
                         </span>
                       </div>
                       <MultipleChoiceSelector
@@ -1198,12 +1169,12 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         placeholder="Atau ketik keyword SEO manual..."
                         style={{
                           width: '100%',
-                          padding: '8px 12px',
-                          borderRadius: '6px',
+                          padding: '10px 14px',
+                          borderRadius: '8px',
                           border: '1px solid var(--border)',
-                          fontSize: '13px',
+                          fontSize: '14px',
                           outline: 'none',
-                          marginTop: '4px',
+                          marginTop: '6px',
                         }}
                       />
                     </div>
@@ -1222,14 +1193,14 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontSize: '11px', fontWeight: 800, color: '#F59E3F', background: '#FFF4DC', padding: '2px 8px', borderRadius: '4px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 800, color: '#F59E3F', background: '#FFF4DC', padding: '3px 8px', borderRadius: '4px' }}>
                         LANGKAH 02
                       </span>
-                      <h3 style={{ fontSize: '15px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
+                      <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
                         Pilih Mekanisme Hook (SOP BAB 2)
                       </h3>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
                       Tulis 5 opsi, pilih 1 terbaik + 2 cadangan
                     </span>
                   </div>
@@ -1343,13 +1314,13 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                       />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+                    <div className="script-two-col-grid">
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                          <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Visual & Text on Screen (Muted-First)
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilihan Visual:
                           </span>
                         </div>
@@ -1366,22 +1337,22 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           placeholder="Atau tulis arahan visual manual..."
                           style={{
                             width: '100%',
-                            padding: '7px 10px',
+                            padding: '10px 12px',
                             borderRadius: '6px',
                             border: '1px solid var(--border)',
-                            fontSize: '12px',
+                            fontSize: '13px',
                             outline: 'none',
-                            marginTop: '4px',
+                            marginTop: '6px',
                           }}
                         />
                       </div>
 
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                          <label style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Emosi Target & Intonasi
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Emosi:
                           </span>
                         </div>
@@ -1398,28 +1369,28 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           placeholder="Atau ketik emosi target manual..."
                           style={{
                             width: '100%',
-                            padding: '7px 10px',
+                            padding: '10px 12px',
                             borderRadius: '6px',
                             border: '1px solid var(--border)',
-                            fontSize: '12px',
+                            fontSize: '13px',
                             outline: 'none',
-                            marginTop: '4px',
+                            marginTop: '6px',
                           }}
                         />
                       </div>
                     </div>
 
                     {/* Candidate Hooks for A/B Testing */}
-                    <div style={{ background: '#F7F8FC', padding: '14px', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid var(--border)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--navy-900)', textTransform: 'uppercase' }}>
+                    <div style={{ background: '#F7F8FC', padding: '16px', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '12px', border: '1px solid var(--border)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 800, color: 'var(--navy-900)', textTransform: 'uppercase' }}>
                           Kandidat Hook Cadangan (A/B Testing - SOP BAB 1.1)
                         </span>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Klik opsi untuk memilih cadangan</span>
+                        <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Klik opsi untuk memilih cadangan</span>
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                        <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
                           Cadangan 1:
                         </label>
                         {hookPrimaryChoices.length > 1 && (
@@ -1437,10 +1408,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           placeholder="Kandidat Hook Cadangan 1 (Mekanisme berbeda)"
                           style={{
                             width: '100%',
-                            padding: '6px 10px',
-                            borderRadius: '4px',
+                            padding: '8px 12px',
+                            borderRadius: '6px',
                             border: '1px solid var(--border)',
-                            fontSize: '12px',
+                            fontSize: '13px',
                             background: '#FFFFFF',
                             outline: 'none',
                           }}
@@ -1530,17 +1501,17 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         value={bridgeAudio}
                         onChange={(e) => setBridgeAudio(e.target.value)}
                         placeholder='Atau ketik dialog bridge manual...'
-                        style={{ width: '100%', padding: '8px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '4px' }}
+                        style={{ width: '100%', padding: '10px 12px', fontSize: '14px', borderRadius: '6px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '6px', lineHeight: 1.45 }}
                       />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div className="script-two-col-grid">
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Visual & Text on Screen
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Visual:
                           </span>
                         </div>
@@ -1554,15 +1525,15 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={bridgeVisualText}
                           onChange={(e) => setBridgeVisualText(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Emosi Target
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Emosi:
                           </span>
                         </div>
@@ -1576,7 +1547,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={bridgeEmotion}
                           onChange={(e) => setBridgeEmotion(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                     </div>
@@ -1584,20 +1555,20 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
 
                   {/* BEAT 3: BODY (8-50 dtk) */}
                   <div style={{ borderLeft: '3px solid #8B5CF6', paddingLeft: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--navy-900)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 800, color: 'var(--navy-900)' }}>
                         3. BODY | 8–50 detik (Penyampaian Nilai Utama)
                       </span>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Ganti visual tiap 2–4 dtk, lulus &apos;cut test&apos;</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Ganti visual tiap 2–4 dtk, lulus &apos;cut test&apos;</span>
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                           Isi Skrip Lisan (Body - Poin 1, 2, 3)
                         </label>
-                        <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
-                          <Sparkles size={10} /> Pilihan Ganda Struktur Body:
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                          <Sparkles size={12} /> Pilihan Ganda Struktur Body:
                         </span>
                       </div>
                       <MultipleChoiceSelector
@@ -1611,17 +1582,17 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         value={bodyAudio}
                         onChange={(e) => setBodyAudio(e.target.value)}
                         placeholder="Atau tulis skrip body secara manual..."
-                        style={{ width: '100%', padding: '8px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '4px' }}
+                        style={{ width: '100%', padding: '10px 12px', fontSize: '14px', borderRadius: '6px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '6px', lineHeight: 1.45 }}
                       />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div className="script-two-col-grid">
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Arahan Visual / B-Roll / Teks Poin
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Visual:
                           </span>
                         </div>
@@ -1635,15 +1606,15 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={bodyVisualText}
                           onChange={(e) => setBodyVisualText(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Emosi Target
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Emosi:
                           </span>
                         </div>
@@ -1657,7 +1628,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={bodyEmotion}
                           onChange={(e) => setBodyEmotion(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                     </div>
@@ -1665,20 +1636,20 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
 
                   {/* BEAT 4: CTA & LOOP (50-60 dtk) */}
                   <div style={{ borderLeft: '3px solid #34C77B', paddingLeft: '14px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--navy-900)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: 800, color: 'var(--navy-900)' }}>
                         4. CTA & LOOP ENDING | 50–60 detik
                       </span>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>1 Instruksi jelas + alasan + loop balik ke frame 1</span>
+                      <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>1 Instruksi jelas + alasan + loop balik ke frame 1</span>
                     </div>
 
                     <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                        <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                           Kalimat CTA (Tujuan: {objective.toUpperCase()})
                         </label>
-                        <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
-                          <Sparkles size={10} /> Pilihan Ganda CTA ({objective}):
+                        <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
+                          <Sparkles size={12} /> Pilihan Ganda CTA ({objective}):
                         </span>
                       </div>
                       <MultipleChoiceSelector
@@ -1692,17 +1663,17 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                         value={ctaAudio}
                         onChange={(e) => setCtaAudio(e.target.value)}
                         placeholder='Atau ketik kalimat CTA manual...'
-                        style={{ width: '100%', padding: '8px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '4px' }}
+                        style={{ width: '100%', padding: '10px 12px', fontSize: '14px', borderRadius: '6px', border: '1px solid var(--border)', resize: 'vertical', marginTop: '6px', lineHeight: 1.45 }}
                       />
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div className="script-two-col-grid">
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Visual & Loop Transition
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Visual:
                           </span>
                         </div>
@@ -1716,15 +1687,15 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={ctaVisualText}
                           onChange={(e) => setCtaVisualText(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                       <div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3px' }}>
-                          <label style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                             Emosi Target
                           </label>
-                          <span style={{ fontSize: '10px', color: 'var(--primary-600)', fontWeight: 600 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--primary-600)', fontWeight: 600 }}>
                             Pilih Emosi:
                           </span>
                         </div>
@@ -1738,7 +1709,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                           type="text"
                           value={ctaEmotion}
                           onChange={(e) => setCtaEmotion(e.target.value)}
-                          style={{ width: '100%', padding: '6px 10px', fontSize: '12px', borderRadius: '4px', border: '1px solid var(--border)', marginTop: '4px' }}
+                          style={{ width: '100%', padding: '8px 12px', fontSize: '13px', borderRadius: '6px', border: '1px solid var(--border)', marginTop: '6px' }}
                         />
                       </div>
                     </div>
@@ -1750,6 +1721,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   <button
                     type="button"
                     onClick={handleCopyAiPrompt}
+                    title="Menyalin prompt input brief beserta dokumen lengkap modul SOP Strategi Penulisan Konten Kreatif v2.0 untuk AI"
                     style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -1767,7 +1739,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     }}
                   >
                     {copiedPrompt ? <Check size={16} /> : <Sparkles size={16} />}
-                    <span>{copiedPrompt ? 'Prompt AI Tersalin!' : 'Salin Master Prompt AI (SOP 7 Bagian)'}</span>
+                    <span>{copiedPrompt ? 'Prompt & Modul SOP Tersalin!' : 'Salin Master Prompt AI (SOP 7 Bagian)'}</span>
                   </button>
 
                   <button
@@ -1893,45 +1865,45 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                 </div>
 
                 {/* The 5-Column SOP Table */}
-                <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: '6px' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
+                <div className="script-table-container" style={{ border: '1px solid var(--border)', borderRadius: '6px' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left', minWidth: '600px' }}>
                     <thead>
                       <tr style={{ background: '#F7F8FC', borderBottom: '1px solid var(--border)' }}>
-                        <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)', width: '15%' }}>Bagian</th>
-                        <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)', width: '12%' }}>Durasi</th>
-                        <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)', width: '30%' }}>Visual & Teks Layar</th>
-                        <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)', width: '30%' }}>Audio / Dialog / VO</th>
-                        <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)', width: '13%' }}>Emosi</th>
+                        <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)', width: '15%' }}>Bagian</th>
+                        <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)', width: '12%' }}>Durasi</th>
+                        <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)', width: '30%' }}>Visual & Teks Layar</th>
+                        <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)', width: '30%' }}>Audio / Dialog / VO</th>
+                        <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)', width: '13%' }}>Emosi</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                        <td style={{ padding: '10px 12px', fontWeight: 700, color: '#F59E3F' }}>1. HOOK</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>0–3 dtk</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-primary)' }}>{hookVisualText || '-'}</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--navy-900)', fontWeight: 600 }}>&ldquo;{hookPrimary || '-'}&rdquo;</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>{hookEmotion}</td>
+                        <td style={{ padding: '12px 14px', fontWeight: 700, color: '#D97706' }}>1. HOOK</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>0–3 dtk</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-primary)' }}>{hookVisualText || '-'}</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--navy-900)', fontWeight: 600 }}>&ldquo;{hookPrimary || '-'}&rdquo;</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>{hookEmotion}</td>
                       </tr>
                       <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                        <td style={{ padding: '10px 12px', fontWeight: 700, color: '#3B6EF5' }}>2. BRIDGE</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>3–8 dtk</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-primary)' }}>{bridgeVisualText || '-'}</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--navy-900)' }}>&ldquo;{bridgeAudio || '-'}&rdquo;</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>{bridgeEmotion}</td>
+                        <td style={{ padding: '12px 14px', fontWeight: 700, color: '#2563EB' }}>2. BRIDGE</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>3–8 dtk</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-primary)' }}>{bridgeVisualText || '-'}</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--navy-900)' }}>&ldquo;{bridgeAudio || '-'}&rdquo;</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>{bridgeEmotion}</td>
                       </tr>
                       <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                        <td style={{ padding: '10px 12px', fontWeight: 700, color: '#8B5CF6' }}>3. BODY</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>8–50 dtk</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-primary)' }}>{bodyVisualText || '-'}</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--navy-900)', whiteSpace: 'pre-line' }}>{bodyAudio || '-'}</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>{bodyEmotion}</td>
+                        <td style={{ padding: '12px 14px', fontWeight: 700, color: '#7C3AED' }}>3. BODY</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>8–50 dtk</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-primary)' }}>{bodyVisualText || '-'}</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--navy-900)', whiteSpace: 'pre-line' }}>{bodyAudio || '-'}</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>{bodyEmotion}</td>
                       </tr>
                       <tr>
-                        <td style={{ padding: '10px 12px', fontWeight: 700, color: '#34C77B' }}>4. CTA & LOOP</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>50–60 dtk</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-primary)' }}>{ctaVisualText || '-'}</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--navy-900)', fontWeight: 600 }}>&ldquo;{ctaAudio || '-'}&rdquo;</td>
-                        <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>{ctaEmotion}</td>
+                        <td style={{ padding: '12px 14px', fontWeight: 700, color: '#166534' }}>4. CTA & LOOP</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>50–60 dtk</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-primary)' }}>{ctaVisualText || '-'}</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--navy-900)', fontWeight: 600 }}>&ldquo;{ctaAudio || '-'}&rdquo;</td>
+                        <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>{ctaEmotion}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -2076,7 +2048,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   }}
                 />
               </div>
-              <span style={{ fontSize: '11px', fontWeight: 600, color: pacingInfo.badgeColor }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: pacingInfo.badgeColor }}>
                 Status: {pacingInfo.statusLabel}
               </span>
             </div>
@@ -2092,14 +2064,14 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                <h4 style={{ fontSize: '13px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
                   SEO Sosmed Triple Mention
                 </h4>
                 <span
                   style={{
-                    fontSize: '10px',
+                    fontSize: '11px',
                     fontWeight: 700,
-                    padding: '2px 6px',
+                    padding: '3px 8px',
                     borderRadius: '4px',
                     background: seoCheck.isTripleMentionMet ? '#E6F7EE' : '#FFF4DC',
                     color: seoCheck.isTripleMentionMet ? '#22A06B' : '#F5A524',
@@ -2109,11 +2081,11 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                 </span>
               </div>
 
-              <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: '0 0 10px', lineHeight: 1.4 }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 10px', lineHeight: 1.45 }}>
                 SOP BAB 5.2: Sebut keyword utama di 3 tempat sekaligus untuk memicu algoritma pencarian.
               </p>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>1. Audio / Lisan:</span>
                   <span style={{ fontWeight: 700, color: seoCheck.inAudio ? '#22A06B' : '#EF4444' }}>
@@ -2146,14 +2118,14 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                <h4 style={{ fontSize: '13px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
+                <h4 style={{ fontSize: '14px', fontWeight: 700, margin: 0, color: 'var(--navy-900)' }}>
                   Checklist QC Mandiri
                 </h4>
                 <span
                   style={{
-                    fontSize: '11px',
+                    fontSize: '12px',
                     fontWeight: 700,
-                    padding: '2px 8px',
+                    padding: '3px 8px',
                     borderRadius: '12px',
                     background: qcPercentage >= 80 ? '#E6F7EE' : '#FFF4DC',
                     color: qcPercentage >= 80 ? '#22A06B' : '#F5A524',
@@ -2179,14 +2151,14 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                 <button
                   type="button"
                   onClick={handleCheckAllQc}
-                  style={{ background: 'none', border: 'none', color: 'var(--primary-600)', fontSize: '11px', fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary-600)', fontSize: '12px', fontWeight: 700, cursor: 'pointer', padding: 0 }}
                 >
                   Centang Semua
                 </button>
                 <button
                   type="button"
                   onClick={handleResetQc}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '11px', cursor: 'pointer', padding: 0 }}
+                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer', padding: 0 }}
                 >
                   Reset
                 </button>
@@ -2201,11 +2173,11 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '8px',
-                      fontSize: '11px',
+                      fontSize: '13px',
                       color: checkedQc[item.id] ? 'var(--text-muted)' : 'var(--text-primary)',
                       textDecoration: checkedQc[item.id] ? 'line-through' : 'none',
                       cursor: 'pointer',
-                      padding: '3px 0',
+                      padding: '4px 0',
                     }}
                   >
                     <input
@@ -2214,7 +2186,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                       onChange={() => handleToggleQc(item.id)}
                       style={{ marginTop: '2px', accentColor: 'var(--primary-600)' }}
                     />
-                    <span style={{ lineHeight: 1.35 }}>
+                    <span style={{ lineHeight: 1.4 }}>
                       <strong style={{ color: 'var(--primary-600)' }}>[{item.section}]</strong> {item.question}
                     </span>
                   </label>
@@ -2261,7 +2233,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
           </div>
 
           {/* 9 Hooks Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
             {filteredHooks.map((h) => (
               <div
                 key={h.id}
@@ -2360,7 +2332,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
             <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 14px', color: 'var(--navy-900)' }}>
               Ringkasan Standar Operasional Prosedur (BAB 1 – 11)
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
               {SOP_CHAPTERS.map((chap) => (
                 <div
                   key={chap.id}
@@ -2371,16 +2343,16 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                     border: '1px solid var(--border)',
                   }}
                 >
-                  <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--primary-600)', background: 'var(--primary-50)', padding: '2px 6px', borderRadius: '4px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary-600)', background: 'var(--primary-50)', padding: '3px 8px', borderRadius: '4px' }}>
                     {chap.number}
                   </span>
-                  <h4 style={{ fontSize: '13px', fontWeight: 700, margin: '6px 0 6px', color: 'var(--navy-900)' }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: 700, margin: '8px 0 6px', color: 'var(--navy-900)' }}>
                     {chap.title}
                   </h4>
-                  <p style={{ fontSize: '11px', color: 'var(--text-secondary)', margin: '0 0 10px', lineHeight: 1.4 }}>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 10px', lineHeight: 1.45 }}>
                     {chap.summary}
                   </p>
-                  <ul style={{ margin: 0, paddingLeft: '14px', fontSize: '11px', color: 'var(--text-primary)', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                  <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'var(--text-primary)', display: 'flex', flexDirection: 'column', gap: '4px', lineHeight: 1.4 }}>
                     {chap.highlights.map((h, i) => (
                       <li key={i}>{h}</li>
                     ))}
@@ -2396,7 +2368,7 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
           TAB 3: RUBRIC SCORING & ANTI-PATTERNS
           ========================================================================= */}
       {activeTab === 'rubric' && (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        <div className="script-two-col-grid">
           {/* Left: Rubric Simulator */}
           <div
             style={{
@@ -2411,11 +2383,11 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
             }}
           >
             <div>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary-600)' }}>SOP BAB 2.8</span>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary-600)' }}>SOP BAB 2.8</span>
               <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '2px 0 4px', color: 'var(--navy-900)' }}>
                 Rubrik Skor Hook (Kandidat Evaluasi)
               </h3>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: 0 }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
                 Tulis 5+ kandidat hook dari mekanisme berbeda, lalu nilai dengan rubrik 0–2.
               </p>
             </div>
@@ -2433,10 +2405,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               }}
             >
               <div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: isRubricPass ? '#22A06B' : '#F5A524' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: isRubricPass ? '#22A06B' : '#F5A524' }}>
                   {isRubricPass ? '✅ HOOK LOLOS GERBANG QC' : '⚠️ HOOK BELUM LOLOS QC'}
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '2px', lineHeight: 1.4 }}>
                   {truthScore === 0 ? '⛔ Truth = 0 (Gugur otomatis: overpromise/clickbait palsu).' : pullScore === 0 ? '⛔ Pull = 0 (Gugur: audiens tidak butuh beat berikutnya).' : 'Skor minimal: 8/12 dengan Truth & Pull lolos.'}
                 </div>
               </div>
@@ -2461,10 +2433,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--navy-900)' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--navy-900)' }}>
                       {dim.label}
                     </div>
-                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                    <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                       {dim.desc}
                     </div>
                   </div>
@@ -2510,11 +2482,11 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
             }}
           >
             <div>
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#EF4444' }}>ANTI-PATTERNS (HAPUS SAAT TERLIHAT)</span>
+              <span style={{ fontSize: '12px', fontWeight: 800, color: '#EF4444' }}>ANTI-PATTERNS (HAPUS SAAT TERLIHAT)</span>
               <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '2px 0 4px', color: 'var(--navy-900)' }}>
                 Daftar Kesalahan Fatal Penulisan Hook
               </h3>
-              <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: 0 }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: 0 }}>
                 Jika menemukan pola ini pada skrip, langsung perbaiki sebelum diajukan ke Creative Director.
               </p>
             </div>
@@ -2526,23 +2498,23 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
                   style={{
                     border: '1px solid #FDECEC',
                     background: '#FFFAFA',
-                    borderRadius: '6px',
-                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    padding: '12px 14px',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '4px',
+                    gap: '6px',
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#EF4444' }}>
+                    <span style={{ fontSize: '13px', fontWeight: 800, color: '#DC2626' }}>
                       ❌ {ap.pattern}
                     </span>
-                    <span style={{ fontSize: '10px', color: 'var(--text-muted)' }}>Hindari</span>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#DC2626', background: '#FEE2E2', padding: '2px 6px', borderRadius: '4px' }}>Hindari</span>
                   </div>
-                  <div style={{ fontSize: '11px', fontStyle: 'italic', color: '#6B7085' }}>
+                  <div style={{ fontSize: '13px', fontStyle: 'italic', color: '#475569', lineHeight: 1.4 }}>
                     Contoh: {ap.example}
                   </div>
-                  <div style={{ fontSize: '11px', fontWeight: 600, color: '#22A06B', marginTop: '2px' }}>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#166534', marginTop: '2px', lineHeight: 1.4 }}>
                     ✅ Perbaikan: {ap.fix}
                   </div>
                 </div>
@@ -2570,16 +2542,16 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
             <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 4px', color: 'var(--navy-900)' }}>
               Hierarki Metrik KPI Konten (BAB 4.1)
             </h3>
-            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', margin: '0 0 16px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '0 0 16px' }}>
               Sebelum video diproduksi, tetapkan 1 metrik primer utama sesuai tujuan konten.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
               <div style={{ border: '1px solid #3B6EF5', borderRadius: '8px', padding: '14px', background: '#F8FAFF' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#3B6EF5', display: 'block', marginBottom: '6px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#3B6EF5', display: 'block', marginBottom: '6px' }}>
                   1. PRIMARY METRICS (Kualitas Inti)
                 </span>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px', lineHeight: 1.4 }}>
                   <li><strong>3-Second Hold Rate:</strong> &gt; Median akun</li>
                   <li><strong>Watch Through Rate (WTR):</strong> &gt; 40% (video pendek) / &gt; 25% (panjang)</li>
                   <li><strong>Rewatch / Replay Rate:</strong> Loop ending</li>
@@ -2588,10 +2560,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               </div>
 
               <div style={{ border: '1px solid #34C77B', borderRadius: '8px', padding: '14px', background: '#F8FDF9' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#22A06B', display: 'block', marginBottom: '6px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#22A06B', display: 'block', marginBottom: '6px' }}>
                   2. SECONDARY METRICS (Jangkauan & Nilai)
                 </span>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px', lineHeight: 1.4 }}>
                   <li><strong>Reach & Impression:</strong> 3x rata-rata akun</li>
                   <li><strong>Share / Send Rate:</strong> &gt; 2% views (konten bernilai tinggi)</li>
                   <li><strong>Save Rate:</strong> &gt; 3% views (edukasi & rujukan praktis)</li>
@@ -2599,10 +2571,10 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               </div>
 
               <div style={{ border: '1px solid #8B5CF6', borderRadius: '8px', padding: '14px', background: '#FAF8FF' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#8B5CF6', display: 'block', marginBottom: '6px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 800, color: '#8B5CF6', display: 'block', marginBottom: '6px' }}>
                   3. TERTIARY METRICS (Konversi Lanjutan)
                 </span>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '12px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '13px', color: 'var(--navy-900)', display: 'flex', flexDirection: 'column', gap: '4px', lineHeight: 1.4 }}>
                   <li><strong>Profile Visit Rate:</strong> &gt; 1% total tayangan</li>
                   <li><strong>Link Click Rate (CTR):</strong> &gt; 1.5%</li>
                   <li><strong>Kualitas Komentar:</strong> &gt; 20 komentar organik berkualitas</li>
@@ -2628,35 +2600,35 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
               Jika konten tidak mencapai target KPI pasca-tayang 24 jam, cocokkan metrik drop dengan tindakan berikut:
             </p>
 
-            <div style={{ overflowX: 'auto', border: '1px solid var(--border)', borderRadius: '6px' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', textAlign: 'left' }}>
+            <div className="script-table-container" style={{ border: '1px solid var(--border)', borderRadius: '6px' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' }}>
                 <thead>
                   <tr style={{ background: '#F7F8FC', borderBottom: '1px solid var(--border)' }}>
-                    <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)' }}>Gejala Metrik</th>
-                    <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)' }}>Akar Masalah</th>
-                    <th style={{ padding: '10px 12px', fontWeight: 700, color: 'var(--navy-900)' }}>Tindakan Solusi Penulis</th>
+                    <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)' }}>Gejala Metrik</th>
+                    <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)' }}>Akar Masalah</th>
+                    <th style={{ padding: '12px 14px', fontWeight: 700, color: 'var(--navy-900)' }}>Tindakan Solusi Penulis</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '10px 12px', fontWeight: 600, color: '#EF4444' }}>3-Sec Hold Rendah (&lt; 50%)</td>
-                    <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>Hook lemah, frame 1 hambar, ada sapaan basi</td>
-                    <td style={{ padding: '10px 12px', color: '#22A06B', fontWeight: 600 }}>Tulis ulang hook dengan Specificity/Identity Callout, ganti visual frame pertama.</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: '#EF4444' }}>3-Sec Hold Rendah (&lt; 50%)</td>
+                    <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>Hook lemah, frame 1 hambar, ada sapaan basi</td>
+                    <td style={{ padding: '12px 14px', color: '#166534', fontWeight: 600 }}>Tulis ulang hook dengan Specificity/Identity Callout, ganti visual frame pertama.</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '10px 12px', fontWeight: 600, color: '#F5A524' }}>Hold Bagus, WTR Anjlok di Tengah</td>
-                    <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>Body bertele-tele, pacing lambat, overpromise</td>
-                    <td style={{ padding: '10px 12px', color: '#22A06B', fontWeight: 600 }}>Terapkan cut test (potong kalimat mubazir), ganti visual tiap 2–4 dtk, tepati janji hook.</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: '#D97706' }}>Hold Bagus, WTR Anjlok di Tengah</td>
+                    <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>Body bertele-tele, pacing lambat, overpromise</td>
+                    <td style={{ padding: '12px 14px', color: '#166534', fontWeight: 600 }}>Terapkan cut test (potong kalimat mubazir), ganti visual tiap 2–4 dtk, tepati janji hook.</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '10px 12px', fontWeight: 600, color: '#3B6EF5' }}>WTR Tinggi, Share/Save Rendah</td>
-                    <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>Menghibur tapi kurang nilai praktis untuk disimpan</td>
-                    <td style={{ padding: '10px 12px', color: '#22A06B', fontWeight: 600 }}>Tambahkan practical step-by-step dan berikan alasan nyata pada CTA untuk simpan/share.</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: '#2563EB' }}>WTR Tinggi, Share/Save Rendah</td>
+                    <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>Menghibur tapi kurang nilai praktis untuk disimpan</td>
+                    <td style={{ padding: '12px 14px', color: '#166534', fontWeight: 600 }}>Tambahkan practical step-by-step dan berikan alasan nyata pada CTA untuk simpan/share.</td>
                   </tr>
                   <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                    <td style={{ padding: '10px 12px', fontWeight: 600, color: '#8B5CF6' }}>Views Tinggi, Konversi / DM Rendah</td>
-                    <td style={{ padding: '10px 12px', color: 'var(--text-secondary)' }}>CTA ambigu atau audiens terlalu luas</td>
-                    <td style={{ padding: '10px 12px', color: '#22A06B', fontWeight: 600 }}>Gunakan SATU instruksi CTA tegas dengan trigger alasan yang relevan.</td>
+                    <td style={{ padding: '12px 14px', fontWeight: 700, color: '#7C3AED' }}>Views Tinggi, Konversi / DM Rendah</td>
+                    <td style={{ padding: '12px 14px', color: 'var(--text-secondary)' }}>CTA ambigu atau audiens terlalu luas</td>
+                    <td style={{ padding: '12px 14px', color: '#166534', fontWeight: 600 }}>Gunakan SATU instruksi CTA tegas dengan trigger alasan yang relevan.</td>
                   </tr>
                 </tbody>
               </table>
@@ -2664,17 +2636,17 @@ Sajikan hasil akhir secara berurutan dalam 7 bagian terstruktur berikut:
 
             {/* Aturan Keputusan 7 Hari */}
             <div style={{ marginTop: '16px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
-              <div style={{ background: '#E6F7EE', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid #22A06B' }}>
-                <strong style={{ color: '#22A06B', fontSize: '11px', display: 'block' }}>SCALE</strong>
-                <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>Penuhi &gt; 2 metrik primer: jadikan acuan formula, alokasikan ke ads / clipper.</span>
+              <div style={{ background: '#E6F7EE', padding: '12px 14px', borderRadius: '8px', borderLeft: '3px solid #22A06B' }}>
+                <strong style={{ color: '#166534', fontSize: '12px', display: 'block', marginBottom: '2px' }}>SCALE</strong>
+                <span style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.4 }}>Penuhi &gt; 2 metrik primer: jadikan acuan formula, alokasikan ke ads / clipper.</span>
               </div>
-              <div style={{ background: '#FFF4DC', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid #F5A524' }}>
-                <strong style={{ color: '#F5A524', fontSize: '11px', display: 'block' }}>ITERATE</strong>
-                <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>Mendekati target tapi 1 metrik drop: ubah 1 variabel (hook atau visual frame 1).</span>
+              <div style={{ background: '#FFF4DC', padding: '12px 14px', borderRadius: '8px', borderLeft: '3px solid #F5A524' }}>
+                <strong style={{ color: '#B45309', fontSize: '12px', display: 'block', marginBottom: '2px' }}>ITERATE</strong>
+                <span style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.4 }}>Mendekati target tapi 1 metrik drop: ubah 1 variabel (hook atau visual frame 1).</span>
               </div>
-              <div style={{ background: '#FDECEC', padding: '10px 12px', borderRadius: '6px', borderLeft: '3px solid #EF4444' }}>
-                <strong style={{ color: '#EF4444', fontSize: '11px', display: 'block' }}>ARSIP</strong>
-                <span style={{ fontSize: '11px', color: 'var(--text-primary)' }}>Jauh di bawah target: catat di Bank Hook sebagai formula gagal, jangan diulang.</span>
+              <div style={{ background: '#FDECEC', padding: '12px 14px', borderRadius: '8px', borderLeft: '3px solid #EF4444' }}>
+                <strong style={{ color: '#B91C1C', fontSize: '12px', display: 'block', marginBottom: '2px' }}>ARSIP</strong>
+                <span style={{ fontSize: '13px', color: 'var(--text-primary)', lineHeight: 1.4 }}>Jauh di bawah target: catat di Bank Hook sebagai formula gagal, jangan diulang.</span>
               </div>
             </div>
           </div>

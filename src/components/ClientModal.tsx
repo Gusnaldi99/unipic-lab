@@ -159,9 +159,9 @@ export const ClientModal: React.FC<ClientModalProps> = ({
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {/* Baris 1: Nama Brand & Inisial */}
-          <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Nama Brand Klien <span style={{ color: 'var(--danger)' }}>*</span>
               </label>
               <input
@@ -174,7 +174,7 @@ export const ClientModal: React.FC<ClientModalProps> = ({
               />
             </div>
             <div>
-              <label style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Inisial / Kode
               </label>
               <input
@@ -189,9 +189,9 @@ export const ClientModal: React.FC<ClientModalProps> = ({
           </div>
 
           {/* Baris 2: Kategori & Instagram */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Kategori / Industri
               </label>
               <input
@@ -203,7 +203,7 @@ export const ClientModal: React.FC<ClientModalProps> = ({
               />
             </div>
             <div>
-              <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+              <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
                 Link Medsos / Instagram
               </label>
               <input
@@ -225,12 +225,12 @@ export const ClientModal: React.FC<ClientModalProps> = ({
               border: '1px solid var(--border)',
             }}
           >
-            <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--navy-900)', display: 'block', marginBottom: '8px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 700, color: 'var(--navy-900)', display: 'block', marginBottom: '8px' }}>
               Target Kuota Konten Bulanan (Deliverables)
             </span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px' }}>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px' }}>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px', fontWeight: 600 }}>
                   Target Video (Reels/TikTok)
                 </label>
                 <input
@@ -242,7 +242,7 @@ export const ClientModal: React.FC<ClientModalProps> = ({
                 />
               </div>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px' }}>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px', fontWeight: 600 }}>
                   Target Foto & Desain Grafis
                 </label>
                 <input
@@ -254,13 +254,13 @@ export const ClientModal: React.FC<ClientModalProps> = ({
                 />
               </div>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px' }}>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '2px', fontWeight: 600 }}>
                   Total Target Otomatis
                 </label>
                 <div
                   style={{
-                    padding: '7px 10px',
-                    fontSize: '13px',
+                    padding: '8px 10px',
+                    fontSize: '14px',
                     fontWeight: 700,
                     background: '#FFFFFF',
                     border: '1px solid var(--border)',
@@ -276,7 +276,7 @@ export const ClientModal: React.FC<ClientModalProps> = ({
 
           {/* Baris 4: Referensi & Hashtag */}
           <div>
-            <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+            <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '4px' }}>
               Referensi Kompetitor / Moodboard
             </label>
             <input

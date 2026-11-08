@@ -259,7 +259,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
         <div className="detail-title-section">
           {isEditing ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <label style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+              <label style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
                 Judul Konten:
               </label>
               <input
@@ -268,7 +268,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
                 placeholder="Masukkan judul konten..."
-                style={{ fontSize: '14px', fontWeight: 700 }}
+                style={{ fontSize: '15px', fontWeight: 700 }}
               />
             </div>
           ) : (
@@ -281,7 +281,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
           {isEditing ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', width: '100%' }}>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>Target Tanggal:</label>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', fontWeight: 600, marginBottom: '2px' }}>Target Tanggal:</label>
                 <input
                   type="date"
                   className="detail-input-field"
@@ -290,7 +290,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                 />
               </div>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>Platform Post:</label>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', fontWeight: 600, marginBottom: '2px' }}>Platform Post:</label>
                 <input
                   type="text"
                   className="detail-input-field"
@@ -300,7 +300,7 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                 />
               </div>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>Pillar Konten:</label>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', fontWeight: 600, marginBottom: '2px' }}>Pillar Konten:</label>
                 <input
                   type="text"
                   className="detail-input-field"
@@ -310,10 +310,10 @@ export const ContentDetailModal: React.FC<ContentDetailModalProps> = ({
                 />
               </div>
               <div>
-                <label style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block' }}>PIC Tim (Database):</label>
+                <label style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', fontWeight: 600, marginBottom: '2px' }}>PIC Tim (Database):</label>
                 <select
                   className="filter-select"
-                  style={{ width: '100%', height: '34px' }}
+                  style={{ width: '100%', minHeight: '38px' }}
                   value={editedAssigneeName}
                   onChange={(e) => {
                     const chosen = effectiveMembers.find((m) => m.name === e.target.value);

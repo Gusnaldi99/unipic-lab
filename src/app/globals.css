@@ -13,9 +13,9 @@
   --bg-card:        #FFFFFF;
   --border:         #ECEEF5;
   --border-focus:   #4338E8;
-  --text-primary:   #1A1D3A;
-  --text-secondary: #5F657B;
-  --text-muted:     #82889E;
+  --text-primary:   #0F172A;
+  --text-secondary: #475569;
+  --text-muted:     #64748B;
 
   /* Semantic / Status */
   --success:    #1B8A5A;
@@ -115,17 +115,17 @@ body {
   gap: 8px;
   background: var(--bg-page);
   border: 1px solid var(--border);
-  padding: 4px 16px;
+  padding: 5px 16px;
   border-radius: var(--radius-pill);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-secondary);
   font-weight: 500;
 }
 
 .badge-tag {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: var(--radius-sm);
   background: var(--primary-50);
   color: var(--primary-600);
@@ -174,15 +174,15 @@ body {
 }
 
 .brand-text h1 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--navy-900);
   line-height: 1.1;
 }
 
 .brand-text span {
-  font-size: 10px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -199,11 +199,11 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   transition: var(--transition);
   border: none;
@@ -259,7 +259,7 @@ body {
 }
 
 .page-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--navy-900);
   letter-spacing: -0.2px;
@@ -280,8 +280,8 @@ body {
 
 .search-input {
   width: 100%;
-  padding: 6px 12px 6px 32px;
-  font-size: 12px;
+  padding: 8px 12px 8px 34px;
+  font-size: 13px;
   font-family: inherit;
   background: var(--bg-page);
   border: 1px solid var(--border);
@@ -368,14 +368,14 @@ body {
 }
 
 .user-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--navy-900);
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .user-role {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
@@ -458,7 +458,7 @@ body {
 }
 
 .kpi-label {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
 }
@@ -470,27 +470,27 @@ body {
 }
 
 .kpi-value {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: var(--navy-900);
   line-height: 1.1;
 }
 
 .trend-badge {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
 }
 
 .trend-up   { background: var(--success-bg); color: var(--success); }
 .trend-down { background: var(--danger-bg);  color: var(--danger); }
 
 .kpi-subtext {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -682,7 +682,7 @@ body {
   }
 
   .mobile-nav-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
   }
 }

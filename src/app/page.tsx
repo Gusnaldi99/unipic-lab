@@ -522,11 +522,11 @@ export default function DashboardPage() {
                         display: 'flex',
                         alignItems: 'center',
                         gap: '6px',
-                        fontSize: '11px',
+                        fontSize: '13px',
                         color: 'var(--text-muted)',
                       }}
                     >
-                      <Sparkles size={13} color="var(--primary-600)" />
+                      <Sparkles size={14} color="var(--primary-600)" />
                       <span>
                         {activeViewMode === 'calendar'
                           ? 'Klik kartu konten di kalender untuk melihat caption & link deliverable.'
@@ -621,10 +621,10 @@ export default function DashboardPage() {
                   >
                     <CheckCircle2 size={24} />
                   </div>
-                  <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--navy-900)' }}>
+                  <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--navy-900)' }}>
                     Modul {activeMenu === 'captions' ? 'Caption Builder' : 'Report Klien'} (Coming Soon)
                   </h3>
-                  <p style={{ fontSize: '12px', color: 'var(--text-secondary)', maxWidth: '420px', lineHeight: 1.5 }}>
+                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', maxWidth: '440px', lineHeight: 1.5 }}>
                     Fitur ini sedang dalam antrean rilis untuk automasi penyusunan caption berbasis pilar dan analitik laporan performa klien.
                   </p>
                   <button

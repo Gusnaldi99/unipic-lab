@@ -143,10 +143,10 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
       <section aria-label="Visual Progres Konten Per Klien">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
           <div>
-            <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--navy-900)' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--navy-900)' }}>
               Visual Progres Konten Lintas Klien
             </h3>
-            <p style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
               Pantau tahapan produksi dan pemenuhan kuota deliverable setiap brand.
             </p>
           </div>
@@ -156,7 +156,7 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
             className="btn-brand-action btn-primary-action"
             onClick={onAddNewBrand}
           >
-            <Plus size={13} />
+            <Plus size={14} />
             <span>+ Tambah Klien Baru</span>
           </button>
         </div>
@@ -301,11 +301,11 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
                     <button
                       type="button"
                       className="btn-brand-action"
-                      style={{ padding: '4px 8px', fontSize: '11px', gap: '4px' }}
+                      style={{ padding: '6px 12px', fontSize: '13px', gap: '5px' }}
                       onClick={() => onEditBrand(client)}
                       title={`Edit profil dan kuota ${client.name}`}
                     >
-                      <Edit3 size={11} />
+                      <Edit3 size={13} />
                       <span>Edit Klien</span>
                     </button>
 
@@ -315,7 +315,7 @@ export const ClientProgressOverview: React.FC<ClientProgressOverviewProps> = ({
                       onClick={() => onSelectBrandAndOpenCalendar(client.id)}
                     >
                       <span>Kalender</span>
-                      <ArrowRight size={13} />
+                      <ArrowRight size={14} />
                     </button>
                   </div>
                 </div>
